@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบริหารโครงการงานกองช่าง - เทศบาลตำบลหนองหัวแรต</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Prompt', sans-serif; 
+            background-color: #fcf8f6;
+        }
+        /* พื้นหลังลายดอกเฟื่องฟ้า Soft Pastel Pattern */
+        .bg-bougainvillea-pastel {
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600' opacity='0.35'%3E%3Cg fill='none' stroke='%23f472b6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M500,50 Q420,120 480,220 T380,320 T480,450' stroke='%23fb7185' stroke-width='2'/%3E%3Cpath d='M480,100 C450,70 420,100 450,130 C480,160 510,130 480,100 Z' fill='%23fbcfe8' fill-opacity='0.4'/%3E%3Cpath d='M440,140 C410,110 380,140 410,170 C440,200 470,170 440,140 Z' fill='%23fde68a' fill-opacity='0.4'/%3E%3Cpath d='M520,180 C490,150 460,180 490,210 C520,240 550,210 520,180 Z' fill='%23bae6fd' fill-opacity='0.4'/%3E%3Cpath d='M410,250 C380,220 350,250 380,280 C410,310 440,280 410,250 Z' fill='%23fbcfe8' fill-opacity='0.4'/%3E%3Cpath d='M100,500 Q180,430 120,330 T220,230 T120,100' stroke='%2334d399' stroke-width='2'/%3E%3Cpath d='M120,450 C150,480 180,450 150,420 C120,390 90,420 120,450 Z' fill='%23a7f3d0' fill-opacity='0.4'/%3E%3Ccircle cx='460' cy='115' r='3' fill='%23fbbf24'/%3E%3Ccircle cx='135' cy='435' r='3' fill='%23fbbf24'/%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right top, left bottom;
+            background-attachment: fixed;
+            background-size: 550px 550px;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-bougainvillea-pastel text-slate-700 antialiased min-h-screen pb-12">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white shadow-md border-b border-rose-800/60 sticky top-0 z-40">
+        <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3.5">
+                <div class="bg-gradient-to-br from-rose-500 to-rose-700 p-3 rounded-2xl text-white shadow-lg shadow-rose-950/40 border border-rose-400/30">
+                    <i data-lucide="building-2" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide text-white">
+                        ระบบบริหารโครงการงานกองช่าง
+                    </h1>
+                    <p class="text-xs text-rose-200/90 flex items-center gap-2 mt-0.5">
+                        <span class="inline-flex items-center gap-1 bg-rose-900/60 text-rose-200 px-2 py-0.5 rounded-md border border-rose-700/60 font-medium">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-rose-400"></i>
+                            เทศบาลตำบลหนองหัวแรต
+                        </span>
+                        <span class="text-rose-700">|</span>
+                        <span class="inline-flex items-center gap-1 bg-slate-800/80 text-slate-200 px-2 py-0.5 rounded-md border border-slate-700">
+                            <i data-lucide="user-check" class="w-3.5 h-3.5 text-sky-400"></i>
+                            ผู้ดูแล: <span class="font-semibold text-white">นายกิตติ พลแหลม</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Header Actions -->
+            <div class="flex flex-wrap items-center gap-2">
+                <button onclick="backupData()" title="สำรองข้อมูลเป็นไฟล์ JSON" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="database" class="w-4 h-4 text-amber-400"></i>
+                    <span>สำรองข้อมูล</span>
+                </button>
+                <label title="คืนค่าข้อมูลจากไฟล์ Backup JSON" class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-sky-400"></i>
+                    <span>ฟื้นฟูข้อมูล</span>
+                    <input type="file" id="jsonFileInput" accept=".json" class="hidden" onchange="restoreData(event)">
+                </label>
+
+                <div class="h-5 w-px bg-slate-700 mx-1 hidden sm:block"></div>
+
+                <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-teal-300 border border-slate-700 px-3 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="file-up" class="w-4 h-4 text-teal-400"></i>
+                    <span>นำเข้า CSV</span>
+                    <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="importCSV(event)">
+                </label>
+                
+                <button onclick="exportCSV(false)" title="ส่งออกข้อมูลทั้งหมด" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="file-down" class="w-4 h-4 text-emerald-400"></i>
+                    <span>ส่งออก CSV</span>
+                </button>
+
+                <!-- ปุ่มส่งออก Word (TH Sarabun) ไม่ใช้ตาราง -->
+                <button onclick="exportWordReport()" title="ส่งออกรายงานเป็นไฟล์ Word (ฟอนต์ TH Sarabun) ไม่ใช้ตาราง" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                    <span>📄 รายงาน Word (TH Sarabun)</span>
+                </button>
+
+                <button onclick="openModal()" class="bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-rose-900/30 ml-1">
+                    <i data-lucide="folder-plus" class="w-4 h-4"></i>
+                    <span>เพิ่มโครงการ</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container mx-auto px-6 py-8">
+        
+        <!-- Dashboard Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition">
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">โครงการทั้งหมด</p>
+                    <h3 id="statTotal" class="text-2xl font-extrabold text-slate-700 mt-1">0</h3>
+                </div>
+                <div class="bg-sky-50 p-3 rounded-2xl text-sky-500 border border-sky-100">
+                    <i data-lucide="folder" class="w-6 h-6"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition">
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">วงเงินตามสัญญารวม</p>
+                    <h3 id="statTotalBudget" class="text-xl font-extrabold text-teal-600 mt-1">0 ฿</h3>
+                </div>
+                <div class="bg-teal-50 p-3 rounded-2xl text-teal-600 border border-teal-100">
+                    <i data-lucide="banknote" class="w-6 h-6"></i>
+                </div>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition">
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">ต้องเร่งรัด (> 30 วัน)</p>
+                    <h3 id="statUrgent" class="text-2xl font-extrabold text-rose-500 mt-1">0</h3>
+                </div>
+                <div class="bg-rose-50 p-3 rounded-2xl text-rose-500 border border-rose-100">
+                    <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                </div>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition">
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">แจ้งเตือนคำนวณค่า K</p>
+                    <h3 id="statKWarning" class="text-2xl font-extrabold text-purple-500 mt-1">0</h3>
+                </div>
+                <div class="bg-purple-50 p-3 rounded-2xl text-purple-500 border border-purple-100">
+                    <i data-lucide="calculator" class="w-6 h-6"></i>
+                </div>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition">
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">เลือกสำหรับรายงาน</p>
+                    <h3 id="statSelected" class="text-2xl font-extrabold text-amber-600 mt-1">0</h3>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-2xl text-amber-500 border border-amber-100">
+                    <i data-lucide="check-square" class="w-6 h-6"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Multi-Filter Control Panel -->
+        <div class="bg-white/90 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-rose-100/60 mb-6 space-y-4">
+            <div class="flex flex-col lg:flex-row gap-3 justify-between items-center">
+                <div class="relative w-full lg:w-96">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 transform -translate-y-1/2 text-rose-400"></i>
+                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="ค้นหาชื่อโครงการ, เลขที่แบบ, งบประมาณ, กรรมการ..." class="w-full pl-10 pr-4 py-2.5 bg-rose-50/30 border border-rose-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:bg-white transition">
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-end">
+                    <button onclick="selectFilteredOnly(true)" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/70 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="check-check" class="w-4 h-4 text-amber-600"></i>
+                        <span>เลือกเฉพาะที่กรอง</span>
+                    </button>
+                    <button onclick="selectFilteredOnly(false)" class="bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1 shadow-sm">
+                        <span>ยกเลิกเลือก</span>
+                    </button>
+
+                    <div class="h-6 w-px bg-slate-200 hidden lg:block"></div>
+
+                    <!-- ปุ่มแก้ไขพร้อมกันหลายรายการ -->
+                    <button onclick="openBatchEditModal()" class="bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200/80 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="layers" class="w-4 h-4 text-sky-600"></i>
+                        <span>แก้ไขกลุ่ม (<span id="selectedBatchCount">0</span>)</span>
+                    </button>
+
+                    <button onclick="resetFilters()" class="text-xs text-slate-400 hover:text-rose-500 px-2 py-2 font-medium flex items-center gap-1 transition">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                        <span>ล้างตัวกรอง</span>
+                    </button>
+                    <button onclick="deleteSelected()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="trash-2" class="w-4 h-4 text-rose-500"></i>
+                        <span>ลบที่เลือก (<span id="selectedDeleteCount">0</span>)</span>
+                    </button>
+                    
+                    <!-- ปุ่มออกหนังสือเร่งรัดแบบ Word -->
+                    <button onclick="openUrgentLetterModal()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 border border-amber-300 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        <span>📄 หนังสือเร่งรัด (.doc)</span>
+                    </button>
+
+                    <button onclick="printSelected()" class="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm shadow-teal-100">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        <span>🖨️ ออกรายงาน (ตาราง)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Filters -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 pt-3 border-t border-rose-50">
+                <div>
+                    <label class="block text-[11px] font-bold text-sky-700 uppercase tracking-wider mb-1 flex items-center gap-1">
+                        <i data-lucide="calendar-range" class="w-3 h-3 text-sky-500"></i> ปีงบประมาณ
+                    </label>
+                    <select id="fiscalYearFilter" onchange="renderTable()" class="w-full border border-sky-200 bg-sky-50/50 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-300 transition">
+                        <option value="ALL">ทุกปีงบประมาณ</option>
+                        <option value="UNSPECIFIED">ยังไม่ได้ระบุปี</option>
+                        <option value="2571">ปี 2571</option>
+                        <option value="2570">ปี 2570</option>
+                        <option value="2569">ปี 2569</option>
+                        <option value="2568">ปี 2568</option>
+                        <option value="2567">ปี 2567</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-amber-700 uppercase tracking-wider mb-1 flex items-center gap-1">
+                        <i data-lucide="map-pin" class="w-3 h-3 text-amber-500"></i> หมู่บ้าน / พื้นที่
+                    </label>
+                    <select id="mooFilter" onchange="renderTable()" class="w-full border border-amber-200 bg-amber-50/50 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-300 transition">
+                        <option value="ALL">ทุกหมู่บ้าน / ทั้งหมด</option>
+                        <option value="1">หมู่ที่ 1</option><option value="2">หมู่ที่ 2</option><option value="3">หมู่ที่ 3</option>
+                        <option value="4">หมู่ที่ 4</option><option value="5">หมู่ที่ 5</option><option value="6">หมู่ที่ 6</option>
+                        <option value="7">หมู่ที่ 7</option><option value="8">หมู่ที่ 8</option><option value="9">หมู่ที่ 9</option>
+                        <option value="10">หมู่ที่ 10</option><option value="11">หมู่ที่ 11</option><option value="12">หมู่ที่ 12</option>
+                        <option value="13">หมู่ที่ 13</option><option value="14">หมู่ที่ 14</option><option value="15">หมู่ที่ 15</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-teal-700 uppercase tracking-wider mb-1 flex items-center gap-1">
+                        <i data-lucide="coins" class="w-3 h-3 text-teal-500"></i> ช่วงวงเงินงบประมาณ
+                    </label>
+                    <select id="budgetRangeFilter" onchange="renderTable()" class="w-full border border-teal-200 bg-teal-50/50 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-300 transition">
+                        <option value="ALL">ทุกช่วงวงเงิน</option>
+                        <option value="0-500k">ไม่เกิน 5 แสนบาท</option>
+                        <option value="500k-1m">5 แสน - 1 ล้านบาท</option>
+                        <option value="1m-5m">1 ล้าน - 5 ล้านบาท</option>
+                        <option value="5m-10m">5 ล้าน - 10 ล้านบาท</option>
+                        <option value="10m-30m">10 ล้าน - 30 ล้านบาท</option>
+                        <option value="over30m">มากกว่า 30 ล้านบาท</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">ประเภทงบประมาณ</label>
+                    <select id="budgetTypeFilter" onchange="renderTable()" class="w-full border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-200 transition">
+                        <option value="ALL">ทุกประเภทงบประมาณ</option>
+                        <option value="UNSPECIFIED">ยังไม่ได้ระบุประเภทงบ</option>
+                        <option value="งบตั้งจ่ายเป็นรายการใหม่">งบตั้งจ่ายเป็นรายการใหม่</option>
+                        <option value="งบเทศบัญญัติ">งบเทศบัญญัติ</option>
+                        <option value="งบใช้จ่ายเงินสะสม">งบใช้จ่ายเงินสะสม</option>
+                        <option value="งบอุดหนุนเฉพาะกิจ">งบอุดหนุนเฉพาะกิจ</option>
+                        <option value="งบกองทุนไฟฟ้า">งบกองทุนไฟฟ้า</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">สถานะโครงการ</label>
+                    <select id="statusFilter" onchange="renderTable()" class="w-full border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-200 transition">
+                        <option value="ALL">ทุกสถานะ</option>
+                        <option value="เตรียมโครงการ">เตรียมโครงการ</option>
+                        <option value="ทำสัญญาแล้ว">ทำสัญญาแล้ว</option>
+                        <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                        <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">สัญญา / การติดตาม</label>
+                    <select id="contractFilter" onchange="renderTable()" class="w-full border border-slate-200 bg-slate-50/50 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-200 transition">
+                        <option value="ALL">สัญญาทั้งหมด</option>
+                        <option value="URGENT_30">ต้องเร่งรัดงาน (สัญญาผ่านไป &gt; 30 วัน)</option>
+                        <option value="WARN_30">ใกล้หมดสัญญา (&le; 30 วัน)</option>
+                        <option value="OVERDUE">เลยกำหนดสัญญา (มีค่าปรับ)</option>
+                        <option value="K_WARN">ใกล้/ครบกำหนดคำนวณค่า K (90 วัน)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Data Table Panel -->
+        <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-sm border border-rose-100/60 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900 text-slate-200 text-xs font-semibold uppercase tracking-wider">
+                            <th class="p-4 w-12 text-center">
+                                <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" class="rounded border-slate-400 text-rose-500 focus:ring-rose-400 cursor-pointer">
+                            </th>
+                            <th class="p-4 min-w-[280px]">รายละเอียดโครงการ / เลขที่แบบ / กรรมการ</th>
+                            <th class="p-4 min-w-[250px]">ปีงบ / สัญญา / ประเภทงบ / ผู้รับจ้าง</th>
+                            <th class="p-4 min-w-[220px]">ระยะเวลาสัญญา & ส่งมอบงาน (ค่า K)</th>
+                            <th class="p-4 min-w-[130px]">สถานะ</th>
+                            <th class="p-4 text-center w-28">การจัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projectTableBody" class="divide-y divide-slate-100 text-sm">
+                        <!-- Rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Form for Single Create & Edit Project -->
+    <div id="projectModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 transition-all duration-300">
+        <div class="bg-white rounded-3xl shadow-xl w-full max-w-3xl overflow-hidden transform transition-all border border-rose-100">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-base font-bold flex items-center gap-2">
+                    <i data-lucide="pen-tool" class="w-4 h-4 text-rose-400"></i>
+                    <span>บันทึกข้อมูลโครงการและสัญญา</span>
+                </h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-xl hover:bg-slate-800 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <form id="projectForm" onsubmit="saveProject(event)" class="p-6 space-y-4 max-h-[82vh] overflow-y-auto">
+                <input type="hidden" id="projectId">
+                
+                <div class="bg-rose-50/40 p-4 rounded-2xl border border-rose-100 space-y-3">
+                    <h4 class="text-xs font-bold uppercase text-rose-800 tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="folder" class="w-4 h-4 text-rose-500"></i> ข้อมูลโครงการและเป้าหมาย
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อโครงการ *</label>
+                            <input type="text" id="projectName" required class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-rose-300 focus:outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">เลขที่แบบ</label>
+                            <input type="text" id="drawingNo" placeholder="เช่น 1/2570" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-rose-300 focus:outline-none transition bg-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">เป้าหมายโครงการ</label>
+                        <textarea id="target" rows="2" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-rose-300 focus:outline-none transition bg-white" placeholder="ระบุเป้าหมายของโครงการ..."></textarea>
+                    </div>
+                    
+                    <!-- ส่วนหมายเหตุ 3 แถว -->
+                    <div class="space-y-2 pt-1 border-t border-rose-100/60">
+                        <label class="block text-xs font-bold text-slate-700">หมายเหตุเพิ่มเติม (3 แถว)</label>
+                        <div>
+                            <input type="text" id="note" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-rose-300 focus:outline-none transition bg-white" placeholder="หมายเหตุ 1: ข้อมูลทั่วไป/สถานะการเข้างาน">
+                        </div>
+                        <div>
+                            <input type="text" id="note2" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-rose-300 focus:outline-none transition bg-white" placeholder="หมายเหตุ 2: ปัญหาอุปสรรค/การประสานงาน">
+                        </div>
+                        <div>
+                            <input type="text" id="note3" class="w-full border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-rose-300 focus:outline-none transition bg-white" placeholder="หมายเหตุ 3: การติดตาม/รายละเอียดเพิ่มเติม">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-sky-50/40 p-4 rounded-2xl border border-sky-100 space-y-3">
+                    <h4 class="text-xs font-bold uppercase text-sky-800 tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-4 h-4 text-sky-500"></i> ข้อมูลสัญญา ประเภทงบประมาณ และค่า K
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-sky-800 mb-1">ปีงบประมาณ</label>
+                            <select id="fiscalYear" class="w-full border border-sky-200 rounded-xl p-2.5 text-sm font-bold text-sky-900 focus:ring-2 focus:ring-sky-300 focus:outline-none bg-sky-50 transition">
+                                <option value="2569" selected>พ.ศ. 2569</option>
+                                <option value="2570">พ.ศ. 2570</option>
+                                <option value="2571">พ.ศ. 2571</option>
+                                <option value="2568">พ.ศ. 2568</option>
+                                <option value="2567">พ.ศ. 2567</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">เลขที่สัญญา</label>
+                            <input type="text" id="contractNo" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none transition bg-white" placeholder="เช่น 12/2569">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">วันที่ลงนามสัญญา</label>
+                            <input type="date" id="signDate" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">ประเภทงบประมาณ</label>
+                            <select id="budgetType" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none bg-white transition">
+                                <option value="">- เลือกประเภทงบประมาณ -</option>
+                                <option value="งบตั้งจ่ายเป็นรายการใหม่">งบตั้งจ่ายเป็นรายการใหม่</option>
+                                <option value="งบเทศบัญญัติ">งบเทศบัญญัติ</option>
+                                <option value="งบใช้จ่ายเงินสะสม">งบใช้จ่ายเงินสะสม</option>
+                                <option value="งบอุดหนุนเฉพาะกิจ">งบอุดหนุนเฉพาะกิจ</option>
+                                <option value="งบกองทุนไฟฟ้า">งบกองทุนไฟฟ้า</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-white p-3 rounded-xl border border-sky-100 shadow-sm">
+                            <label class="block text-xs font-bold text-sky-800 mb-1">📋 วงเงินงบประมาณ (ราคากลาง) (บาท)</label>
+                            <input type="number" step="0.01" id="budget" placeholder="0.00" class="w-full border border-slate-200 rounded-lg p-2 text-sm font-bold text-sky-700 focus:ring-2 focus:ring-sky-300 focus:outline-none transition bg-white">
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-teal-100 shadow-sm">
+                            <label class="block text-xs font-bold text-teal-800 mb-1">✍️ วงเงินตามสัญญา (บาท)</label>
+                            <input type="number" step="0.01" id="contractAmount" placeholder="0.00" class="w-full border border-slate-200 rounded-lg p-2 text-sm font-bold text-teal-700 focus:ring-2 focus:ring-teal-300 focus:outline-none transition bg-white">
+                        </div>
+                    </div>
+
+                    <!-- ปรับเพิ่มช่องแสดงจำนวนวันก่อสร้างอัตโนมัติ -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">วันเริ่มสัญญา</label>
+                            <input type="date" id="startDate" onchange="autoCalculateDays()" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">วันสิ้นสุดสัญญา</label>
+                            <input type="date" id="endDate" onchange="autoCalculateDays()" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-sky-800 mb-1">ระยะเวลาก่อสร้าง (วัน)</label>
+                            <input type="number" id="constructionDays" readonly placeholder="คำนวณอัตโนมัติ" class="w-full border border-sky-200 bg-sky-50 text-sky-900 font-extrabold rounded-xl p-2.5 text-sm focus:outline-none cursor-not-allowed">
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-amber-50/60 rounded-xl border border-amber-200/70 space-y-2">
+                        <div class="text-xs font-bold text-amber-900 flex items-center gap-1">
+                            <i data-lucide="bell-off" class="w-4 h-4 text-amber-600"></i> การดำเนินการติดตามเร่งรัดงาน (> 30 วัน)
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <label class="flex items-center gap-2 text-xs font-bold text-amber-900 cursor-pointer">
+                                <input type="checkbox" id="urgentDone" class="w-4 h-4 rounded border-amber-300 text-amber-600 focus:ring-amber-400">
+                                <span>ดำเนินการเร่งรัดแล้ว (หยุดแจ้งเตือน)</span>
+                            </label>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-amber-800 mb-1">วันที่ดำเนินการเร่งรัด</label>
+                                <input type="date" id="urgentDoneDate" class="w-full border border-amber-200 rounded-xl p-1.5 text-xs bg-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-purple-50/60 rounded-xl border border-purple-200/70 space-y-2">
+                        <div class="text-xs font-bold text-purple-900 flex items-center gap-1">
+                            <i data-lucide="calculator" class="w-4 h-4 text-purple-600"></i> การส่งมอบงาน วันคำนวณค่า K (+90 วัน) และสถานะการดำเนินการ
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-purple-800 mb-1">วันส่งมอบงานจริง (เมื่อเสร็จสิ้น)</label>
+                                <input type="date" id="deliveryDate" onchange="calculateKDate()" class="w-full border border-purple-200 rounded-xl p-2 text-sm focus:ring-2 focus:ring-purple-300 focus:outline-none transition bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-purple-800 mb-1">วันสิ้นสุดการคำนวณค่า K (+90 วัน)</label>
+                                <input type="date" id="kDate" readonly class="w-full border border-purple-100 bg-purple-50 text-purple-900 font-bold rounded-xl p-2 text-sm focus:outline-none cursor-not-allowed">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 border-t border-purple-100 items-center">
+                            <label class="flex items-center gap-2 text-xs font-bold text-purple-900 cursor-pointer">
+                                <input type="checkbox" id="kDone" class="w-4 h-4 rounded border-purple-300 text-purple-600 focus:ring-purple-400">
+                                <span>คำนวณ/ดำเนินการค่า K แล้ว (หยุดแจ้งเตือน)</span>
+                            </label>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-purple-800 mb-1">วันที่ดำเนินการค่า K</label>
+                                <input type="date" id="kDoneDate" class="w-full border border-purple-200 rounded-xl p-1.5 text-xs bg-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">อัตราค่าปรับต่อวัน (%)</label>
+                            <input type="number" step="0.01" id="fineRate" value="0" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อผู้รับจ้าง / บริษัท</label>
+                            <input type="text" id="contractor" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">สถานะโครงการ</label>
+                            <select id="status" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none bg-white transition">
+                                <option value="เตรียมโครงการ">เตรียมโครงการ</option>
+                                <option value="ทำสัญญาแล้ว">ทำสัญญาแล้ว</option>
+                                <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                                <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50/30 p-4 rounded-2xl border border-amber-100 space-y-3">
+                    <h4 class="text-xs font-bold uppercase text-amber-800 tracking-wider flex items-center justify-between">
+                        <span class="flex items-center gap-1.5"><i data-lucide="users" class="w-4 h-4 text-amber-500"></i> คำสั่งและคณะกรรมการตรวจรับพัสดุ (สูงสุด 5 คน)</span>
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pb-2 border-b border-amber-100">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">เลขที่คำสั่งแต่งตั้ง</label>
+                            <input type="text" id="orderNo" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-amber-300 focus:outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">วันที่คำสั่งแต่งตั้ง</label>
+                            <input type="date" id="orderDate" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-amber-300 focus:outline-none transition bg-white">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700">รายชื่อคณะกรรมการตรวจรับพัสดุ</label>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-xs font-bold text-slate-400 text-center">คนที่ 1</span>
+                            <select id="commName_0" class="md:col-span-7 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="commPos_0" class="md:col-span-4 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white">
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการ">กรรมการ</option>
+                                <option value="กรรมการและเลขานุการ">กรรมการและเลขานุการ</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-xs font-bold text-slate-400 text-center">คนที่ 2</span>
+                            <select id="commName_1" class="md:col-span-7 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="commPos_1" class="md:col-span-4 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white">
+                                <option value="กรรมการ" selected>กรรมการ</option>
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการและเลขานุการ">กรรมการและเลขานุการ</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-xs font-bold text-slate-400 text-center">คนที่ 3</span>
+                            <select id="commName_2" class="md:col-span-7 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="commPos_2" class="md:col-span-4 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white">
+                                <option value="กรรมการ" selected>กรรมการ</option>
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการและเลขานุการ">กรรมการและเลขานุการ</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-xs font-bold text-slate-400 text-center">คนที่ 4</span>
+                            <select id="commName_3" class="md:col-span-7 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="commPos_3" class="md:col-span-4 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white">
+                                <option value="กรรมการ" selected>กรรมการ</option>
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการและเลขานุการ">กรรมการและเลขานุการ</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-xs font-bold text-slate-400 text-center">คนที่ 5</span>
+                            <select id="commName_4" class="md:col-span-7 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="commPos_4" class="md:col-span-4 border border-slate-200 rounded-xl p-2 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white">
+                                <option value="กรรมการและเลขานุการ" selected>กรรมการและเลขานุการ</option>
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการ">กรรมการ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ช่างผู้ควบคุมงาน</label>
+                        <select id="supervisor" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-amber-300 focus:outline-none transition bg-white supervisor-select">
+                            <option value="">-- ยังไม่ระบุผู้ควบคุมงาน (ระบุภายหลัง) --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal()" class="px-5 py-2.5 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">ยกเลิก</button>
+                    <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-bold rounded-xl text-xs transition shadow-sm shadow-rose-900/20">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Form for BATCH Edit -->
+    <div id="batchEditModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 transition-all duration-300">
+        <div class="bg-white rounded-3xl shadow-xl w-full max-w-3xl overflow-hidden transform transition-all border border-sky-100">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-sky-200">
+                <h3 class="text-base font-bold flex items-center gap-2 text-sky-400">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                    <span>แก้ไขข้อมูลพร้อมกันหลายรายการ (<span id="batchCountText">0</span> โครงการ)</span>
+                </h3>
+                <button onclick="closeBatchModal()" class="text-slate-400 hover:text-white p-1 rounded-xl hover:bg-slate-800 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <form id="batchEditForm" onsubmit="saveBatchEdit(event)" class="p-6 space-y-4 max-h-[82vh] overflow-y-auto">
+                <p class="text-xs text-amber-900 bg-amber-50 border border-amber-200/80 p-3 rounded-2xl flex items-center gap-2">
+                    <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0"></i>
+                    <span>ติ๊กถูกหน้าหัวข้อที่คุณต้องการแก้ไข ระบบจะเปลี่ยนเฉพาะหัวข้อที่ติ๊กเลือกให้กับโครงการที่เลือกไว้ทั้งหมดครับ</span>
+                </p>
+
+                <!-- 1. ปีงบประมาณ, เลขที่แบบ, ประเภทงบประมาณ & สถานะ -->
+                <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div>
+                            <label class="flex items-center gap-2 text-xs font-bold text-sky-800 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_fiscalYear" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>ปีงบประมาณ</span>
+                            </label>
+                            <select id="batch_fiscalYear" class="w-full border border-sky-200 rounded-xl p-2.5 text-xs bg-sky-50 font-bold text-sky-900 focus:ring-2 focus:ring-sky-300">
+                                <option value="2569">พ.ศ. 2569</option>
+                                <option value="2570">พ.ศ. 2570</option>
+                                <option value="2571">พ.ศ. 2571</option>
+                                <option value="2568">พ.ศ. 2568</option>
+                                <option value="2567">พ.ศ. 2567</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_drawingNo" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>เลขที่แบบ</span>
+                            </label>
+                            <input type="text" id="batch_drawingNo" placeholder="เช่น 1/2570" class="w-full border border-slate-200 rounded-xl p-2.5 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-2 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_budgetType" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>ประเภทงบประมาณ</span>
+                            </label>
+                            <select id="batch_budgetType" class="w-full border border-slate-200 rounded-xl p-2.5 text-xs bg-white focus:ring-2 focus:ring-sky-300">
+                                <option value="">- เลือกประเภทงบประมาณ -</option>
+                                <option value="งบตั้งจ่ายเป็นรายการใหม่">งบตั้งจ่ายเป็นรายการใหม่</option>
+                                <option value="งบเทศบัญญัติ">งบเทศบัญญัติ</option>
+                                <option value="งบใช้จ่ายเงินสะสม">งบใช้จ่ายเงินสะสม</option>
+                                <option value="งบอุดหนุนเฉพาะกิจ">งบอุดหนุนเฉพาะกิจ</option>
+                                <option value="งบกองทุนไฟฟ้า">งบกองทุนไฟฟ้า</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-2 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_status" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>สถานะโครงการ</span>
+                            </label>
+                            <select id="batch_status" class="w-full border border-slate-200 rounded-xl p-2.5 text-xs bg-white focus:ring-2 focus:ring-sky-300">
+                                <option value="เตรียมโครงการ">เตรียมโครงการ</option>
+                                <option value="ทำสัญญาแล้ว">ทำสัญญาแล้ว</option>
+                                <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                                <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. สัญญา และ วันที่ -->
+                <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_signDate" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>วันลงนามสัญญา</span>
+                            </label>
+                            <input type="date" id="batch_signDate" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_startDate" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>วันเริ่มสัญญา</span>
+                            </label>
+                            <input type="date" id="batch_startDate" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_endDate" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>วันสิ้นสุดสัญญา</span>
+                            </label>
+                            <input type="date" id="batch_endDate" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_deliveryDate" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>วันส่งมอบงานจริง</span>
+                            </label>
+                            <input type="date" id="batch_deliveryDate" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_contractor" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>ชื่อผู้รับจ้าง / บริษัท</span>
+                            </label>
+                            <input type="text" id="batch_contractor" placeholder="ระบุชื่อผู้รับจ้าง" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. คำสั่งแต่งตั้ง และ ผู้ควบคุมงาน -->
+                <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_orderNo" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>เลขที่คำสั่งแต่งตั้ง</span>
+                            </label>
+                            <input type="text" id="batch_orderNo" placeholder="เช่น 105/2569" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_orderDate" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>วันที่คำสั่งแต่งตั้ง</span>
+                            </label>
+                            <input type="date" id="batch_orderDate" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-1 cursor-pointer">
+                                <input type="checkbox" id="chk_supervisor" class="rounded text-sky-500 focus:ring-sky-300">
+                                <span>ช่างผู้ควบคุมงาน</span>
+                            </label>
+                            <select id="batch_supervisor" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white supervisor-select">
+                                <option value="">-- ไม่ระบุผู้ควบคุมงาน --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. คณะกรรมการตรวจรับพัสดุ -->
+                <div class="bg-slate-50/50 p-4 rounded-2xl border border-slate-100 space-y-2">
+                    <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer mb-1 border-b pb-2">
+                        <input type="checkbox" id="chk_committees" class="rounded text-sky-500 focus:ring-sky-300">
+                        <span>อัปเดตคณะกรรมการตรวจรับพัสดุยกชุด</span>
+                    </label>
+
+                    <div class="space-y-1.5 pt-1">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-[11px] font-bold text-slate-400 text-center">1</span>
+                            <select id="batch_commName_0" class="md:col-span-7 border border-slate-200 rounded-lg p-1.5 text-xs bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="batch_commPos_0" class="md:col-span-4 border border-slate-200 rounded-lg p-1.5 text-xs bg-white">
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการ">กรรมการ</option>
+                                <option value="กรรมการและเลขานุการ">กรรมการและเลขานุการ</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-[11px] font-bold text-slate-400 text-center">2</span>
+                            <select id="batch_commName_1" class="md:col-span-7 border border-slate-200 rounded-lg p-1.5 text-xs bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="batch_commPos_1" class="md:col-span-4 border border-slate-200 rounded-lg p-1.5 text-xs bg-white">
+                                <option value="กรรมการ" selected>กรรมการ</option>
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการและเลขานุการ">กรรมการและเลขานุการ</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-[11px] font-bold text-slate-400 text-center">3</span>
+                            <select id="batch_commName_2" class="md:col-span-7 border border-slate-200 rounded-lg p-1.5 text-xs bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="batch_commPos_2" class="md:col-span-4 border border-slate-200 rounded-lg p-1.5 text-xs bg-white">
+                                <option value="กรรมการ" selected>กรรมการ</option>
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการและเลขานุการ">กรรมการและเลขานุการ</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-[11px] font-bold text-slate-400 text-center">4</span>
+                            <select id="batch_commName_3" class="md:col-span-7 border border-slate-200 rounded-lg p-1.5 text-xs bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="batch_commPos_3" class="md:col-span-4 border border-slate-200 rounded-lg p-1.5 text-xs bg-white">
+                                <option value="กรรมการ" selected>กรรมการ</option>
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการและเลขานุการ">กรรมการและเลขานุการ</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                            <span class="md:col-span-1 text-[11px] font-bold text-slate-400 text-center">5</span>
+                            <select id="batch_commName_4" class="md:col-span-7 border border-slate-200 rounded-lg p-1.5 text-xs bg-white supervisor-select">
+                                <option value="">-- ยังไม่ระบุ --</option>
+                            </select>
+                            <select id="batch_commPos_4" class="md:col-span-4 border border-slate-200 rounded-lg p-1.5 text-xs bg-white">
+                                <option value="กรรมการและเลขานุการ" selected>กรรมการและเลขานุการ</option>
+                                <option value="ประธานกรรมการ">ประธานกรรมการ</option>
+                                <option value="กรรมการ">กรรมการ</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeBatchModal()" class="px-5 py-2.5 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">ยกเลิก</button>
+                    <button type="submit" class="px-6 py-2.5 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl text-xs transition shadow-sm shadow-sky-200">บันทึกปรับปรุงข้อมูลกลุ่ม</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal ออกหนังสือเร่งรัดงาน Word (.doc) -->
+    <div id="urgentLetterModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 transition-all duration-300">
+        <div class="bg-white rounded-3xl shadow-xl w-full max-w-md overflow-hidden border border-amber-100">
+            <div class="bg-amber-400 text-amber-950 px-6 py-4 flex justify-between items-center">
+                <h3 class="text-base font-bold flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-5 h-5 text-amber-900"></i>
+                    <span>ออกหนังสือเร่งรัดมีครุฑ ( Word )</span>
+                </h3>
+                <button onclick="closeUrgentLetterModal()" class="text-amber-900 hover:text-black p-1 rounded-xl transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="bg-amber-50 border border-amber-200/60 rounded-2xl p-3.5 text-xs text-amber-900 space-y-1">
+                    <p class="font-bold">📋 รายการโครงการที่จะออกหนังสือ:</p>
+                    <div id="urgentProjectNameList" class="font-medium text-slate-700 line-clamp-3"></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">ระดับการเร่งรัด *</label>
+                    <select id="letterLevelInput" class="w-full border border-amber-200 bg-amber-50/40 rounded-xl p-2.5 text-xs font-bold text-amber-900 focus:ring-2 focus:ring-amber-300 focus:outline-none transition">
+                        <option value="1">ครั้งที่ 1 : แจ้งเร่งรัดเข้าดำเนินการเบื้องต้น (> 30 วัน)</option>
+                        <option value="2">ครั้งที่ 2 : แจ้งเร่งรัดกวดขันการทำงานครั้งที่ 1 (+15 วัน / > 45 วัน)</option>
+                        <option value="3">ครั้งที่ 3 : แจ้งเร่งรัดกวดขันการทำงานครั้งที่ 2 (+15 วัน / > 60 วัน)</option>
+                        <option value="4">ครั้งที่ 4 : แจ้งเตือนขั้นสุดท้ายก่อนพิจารณาตามสัญญา (+15 วัน / > 75 วัน)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">เลขที่หนังสือเร่งรัด (ถ้ามี)</label>
+                    <input type="text" id="letterNoInput" placeholder="เช่น นม 54204/" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-amber-300 focus:outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">วันที่ของหนังสือเร่งรัด *</label>
+                    <input type="date" id="letterDateInput" class="w-full border border-amber-200 bg-amber-50/40 rounded-xl p-2.5 text-sm font-semibold text-amber-900 focus:ring-2 focus:ring-amber-300 focus:outline-none transition">
+                </div>
+
+                <div class="pt-3 flex justify-end gap-2 border-t border-slate-100">
+                    <button type="button" onclick="closeUrgentLetterModal()" class="px-4 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">ยกเลิก</button>
+                    <button type="button" onclick="generateUrgentWordDoc()" class="px-5 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 font-bold rounded-xl text-xs transition shadow-sm flex items-center gap-1.5">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>ดาวน์โหลด Word (มีตราครุฑ)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        let projects = [];
+        let currentlyFilteredProjects = [];
+
+        // รายชื่อบุคลากรมาตรฐานสำหรับสร้างตัวเลือก Dropdown
+        const personnelNames = [
+            "นางสาวธนัชชานันท์ พิชัยฐิติยากุล",
+            "นางเบญมาภรณ์ ยุติธรรม",
+            "นางสาวอชิรญาณ์ ดวงกระโทก",
+            "สิบเอกพิชิต โปรยกระโทก",
+            "นางปาณิสรา โพธิ์เงิน",
+            "นางอมรรัตน์ ปักกาโล",
+            "นางสาวพัชรประภา เหล่าอัน",
+            "นางสาวจารุณี กรีหมื่นไวย",
+            "นางสาวศรีประไพ เปลี่ยวกระโทก",
+            "นายกิตติ พลแหลม",
+            "นางสาวมัลลิกา สายสมบูรณ์",
+            "นางสาววิภาดา ยี่สารพัฒน์",
+            "นางสาวศศิปรียา แพงวงค์",
+            "นายพิเชฎฐ์ พริ้งกระโทก",
+            "นางสาวธันยนันท์ เงินประโคน",
+            "จ่าเอกวิชัย จิตรคง",
+            "นางสาวนุชจรีย์ กอบกระโทก",
+            "นางสาวนลินี สวยผักแว่น",
+            "นางชลธิชา หาญชนะ"
+        ];
+
+        // SVG ตราครุฑมาตรฐานสำหรับแทรกลงในไฟล์ Word
+        const krutSvgBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAJFSURBVHic7ZtLTsMwEIZ/XlBA3bBgwQ1YcANuAIsW3IAbwA24ASxY0FA27LBgxQUqIdE0SpvYcew4fsn+JpIsy6/HnlnbE1tKSgohhBBCCCGEEEIIIUyl2wE8gA9gV39fAQ+6fZ4wBh4t8NnAY+x+mXoH+g4wBB4c8N6yfxp1bB6yC+wDbw44a9m/iDo2D2UDvgF7+nsF2ANuh5z7q+6/jzo2p9QCnIGV/r4AHgEvA8471/0vUYfmtC6wB+w0uKf280u132e1jwHn/uv+F6hDc9oY2Gs87gMbwE3N+0d/vwv49k3t/24x6tBcNgHWWjzn9vNttQ9/nmt59w449x3UoTltBOw0ePZ8O+z4/K3ubx1v/1vUsTltBDzo4+o/y67zR/33v/Z/jzo0l2WD51nfs+N82uV9d2z5F+y65w/q0Fw2BDbAox6f5n+d3+l1/qL71/wLdsf0CXRZ1fA2g7uP2gD2gD0df71s7lH3m/j8v1/d36MOzWV1wS/Avh6n3c+/1vyN7t/y15GgDs0pa/lvhq6sHrfdf6v5L/X3S0y/e4xuh5wSAg/AizFv5952f4lq10U8s/4g1fJv6vOvdN1o9xW5xJ2g7wBD4FkDf1XzH+jzT7rf5y/X/FfgEn8CfwE41+2Xy+b+Xp1nS0wPgU+P883WzV128f8K79bMvw+p584a+Dvh30w22X3NCSGEEEIIIYQQQggh9Bg/AJ+4JvO2VesAAAAASUVORK5CYRTEAK=";
+
+        const thaiMonths = [
+            "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+            "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+        ];
+
+        const thaiMonthsShort = [
+            "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+            "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+        ];
+
+        // ฟังก์ชันคำนวณจำนวนวันก่อสร้าง (นับรวมวันเริ่มต้นตามมาตรฐานสัญญาจ้าง)
+        function calculateConstructionDays(startDateStr, endDateStr) {
+            if (!startDateStr || !endDateStr) return null;
+            const start = new Date(startDateStr);
+            const end = new Date(endDateStr);
+            if (isNaN(start) || isNaN(end) || end < start) return null;
+            const diffTime = end - start;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        }
+
+        function autoCalculateDays() {
+            const startVal = document.getElementById('startDate').value;
+            const endVal = document.getElementById('endDate').value;
+            const days = calculateConstructionDays(startVal, endVal);
+            document.getElementById('constructionDays').value = days !== null ? days : '';
+        }
+
+        function populatePersonnelDropdowns() {
+            const dropdowns = document.querySelectorAll('.supervisor-select');
+            dropdowns.forEach(select => {
+                const currentValue = select.value;
+                let isCommitteeSelect = select.id.startsWith('commName_') || select.id.startsWith('batch_commName_');
+                let defaultOptionText = isCommitteeSelect ? '-- ยังไม่ระบุ --' : '-- ยังไม่ระบุผู้ควบคุมงาน (ระบุภายหลัง) --';
+
+                select.innerHTML = `<option value="">${defaultOptionText}</option>`;
+                personnelNames.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    select.appendChild(opt);
+                });
+                if (currentValue) {
+                    select.value = currentValue;
+                }
+            });
+        }
+
+        function formatThaiBE(dateStr, short = true) {
+            if (!dateStr) return '-';
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+
+            const year = parseInt(parts[0], 10) + 543;
+            const monthIndex = parseInt(parts[1], 10) - 1;
+            const day = parseInt(parts[2], 10);
+
+            const monthName = short ? thaiMonthsShort[monthIndex] : thaiMonths[monthIndex];
+            return `${day} ${monthName} ${year}`;
+        }
+
+        function formatThaiFullDate(dateStr) {
+            if (!dateStr) return '....................';
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+
+            const year = parseInt(parts[0], 10) + 543;
+            const monthIndex = parseInt(parts[1], 10) - 1;
+            const day = parseInt(parts[2], 10);
+
+            return `${day} ${thaiMonths[monthIndex]} ${year}`;
+        }
+
+        function calculateKDate() {
+            const deliveryVal = document.getElementById('deliveryDate').value;
+            if (deliveryVal) {
+                const d = new Date(deliveryVal);
+                d.setDate(d.getDate() + 90);
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                document.getElementById('kDate').value = `${year}-${month}-${day}`;
+            } else {
+                document.getElementById('kDate').value = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populatePersonnelDropdowns();
+            loadInitialData();
+            renderTable();
+            lucide.createIcons();
+        });
+
+        function loadInitialData() {
+            const saved = localStorage.getItem('engineering_projects');
+            if (saved) {
+                projects = JSON.parse(saved);
+            } else {
+                projects = [
+                    {
+                        id: 'PRJ-001',
+                        fiscalYear: '2570',
+                        drawingNo: '1/2570',
+                        name: 'โครงการก่อสร้างถนน คสล. สายบ้านหนองขาม หมู่ที่ 4',
+                        target: 'ก่อสร้างถนน คสล. กว้าง 5 เมตร ยาว 200 เมตร หนา 0.15 เมตร หมู่ที่ 4',
+                        note: 'เร่งรัดผู้รับจ้างเข้าหน้างาน',
+                        note2: '',
+                        note3: '',
+                        contractNo: '12/2570',
+                        signDate: '2026-07-25',
+                        budgetType: 'งบเทศบัญญัติ',
+                        budget: 500000,
+                        contractAmount: 450000,
+                        startDate: '2026-08-01',
+                        endDate: '2026-08-31',
+                        deliveryDate: '',
+                        kDate: '',
+                        kDone: false,
+                        kDoneDate: '',
+                        urgentDone: false,
+                        urgentDoneDate: '',
+                        fineRate: 0,
+                        contractor: 'หจก. นครก่อสร้าง',
+                        orderNo: '105/2570',
+                        orderDate: '2026-07-20',
+                        committees: [
+                            { name: 'นางสาวธนัชชานันท์ พิชัยฐิติยากุล', pos: 'ประธานกรรมการ' },
+                            { name: 'นางเบญมาภรณ์ ยุติธรรม', pos: 'กรรมการ' },
+                            { name: 'นายกิตติ พลแหลม', pos: 'กรรมการและเลขานุการ' }
+                        ],
+                        status: 'กำลังดำเนินการ',
+                        supervisor: '',
+                        selected: false
+                    }
+                ];
+                saveToStorage();
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('engineering_projects', JSON.stringify(projects));
+        }
+
+        function getDaysPassedFromStart(startDateStr) {
+            if (!startDateStr) return 0;
+            const start = new Date(startDateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const diffTime = today - start;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function getDaysRemaining(endDateStr) {
+            if (!endDateStr) return null;
+            const end = new Date(endDateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const diffTime = end - today;
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('fiscalYearFilter').value = 'ALL';
+            document.getElementById('mooFilter').value = 'ALL';
+            document.getElementById('budgetRangeFilter').value = 'ALL';
+            document.getElementById('budgetTypeFilter').value = 'ALL';
+            document.getElementById('statusFilter').value = 'ALL';
+            document.getElementById('contractFilter').value = 'ALL';
+            renderTable();
+        }
+
+        function checkMooMatch(text, targetMoo) {
+            if (!text) return false;
+            const regex = new RegExp(`(หมู่ที่|หมู่|ม\\.)\\s*${targetMoo}(?!\\d)`, 'i');
+            return regex.test(text);
+        }
+
+        function selectFilteredOnly(selectState) {
+            if (currentlyFilteredProjects.length === 0) {
+                alert('ไม่พบรายการโครงการในตัวกรองปัจจุบัน');
+                return;
+            }
+
+            const filteredIds = new Set(currentlyFilteredProjects.map(p => p.id));
+            projects.forEach(p => {
+                if (filteredIds.has(p.id)) {
+                    p.selected = selectState;
+                }
+            });
+
+            saveToStorage();
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('projectTableBody');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const fiscalYearFilter = document.getElementById('fiscalYearFilter').value;
+            const mooFilter = document.getElementById('mooFilter').value;
+            const budgetRangeFilter = document.getElementById('budgetRangeFilter').value;
+            const budgetTypeFilter = document.getElementById('budgetTypeFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const contractFilter = document.getElementById('contractFilter').value;
+
+            tbody.innerHTML = '';
+
+            let totalCount = projects.length;
+            let urgentCount = 0;
+            let kWarningCount = 0;
+            let selectedCount = 0;
+            let totalContractSum = 0;
+
+            currentlyFilteredProjects = projects.filter(p => {
+                const committeeText = p.committees ? p.committees.map(c => c.name).join(' ') : (p.committee || '');
+                const budgetStr = p.budget ? p.budget.toString() : '';
+                const contractAmtStr = p.contractAmount ? p.contractAmount.toString() : '';
+                const matchSearch = p.name.toLowerCase().includes(search) || 
+                                    (p.drawingNo && p.drawingNo.toLowerCase().includes(search)) ||
+                                    (p.target && p.target.toLowerCase().includes(search)) || 
+                                    (p.contractNo && p.contractNo.toLowerCase().includes(search)) ||
+                                    (p.note && p.note.toLowerCase().includes(search)) ||
+                                    (p.note2 && p.note2.toLowerCase().includes(search)) ||
+                                    (p.note3 && p.note3.toLowerCase().includes(search)) ||
+                                    (p.budgetType && p.budgetType.toLowerCase().includes(search)) ||
+                                    (p.fiscalYear && p.fiscalYear.toString().includes(search)) ||
+                                    (p.supervisor && p.supervisor.toLowerCase().includes(search)) ||
+                                    budgetStr.includes(search) ||
+                                    contractAmtStr.includes(search) ||
+                                    committeeText.toLowerCase().includes(search);
+                
+                let matchFiscalYear = true;
+                if (fiscalYearFilter === 'UNSPECIFIED') {
+                    matchFiscalYear = !p.fiscalYear;
+                } else if (fiscalYearFilter !== 'ALL') {
+                    matchFiscalYear = p.fiscalYear === fiscalYearFilter;
+                }
+
+                let matchMoo = true;
+                if (mooFilter !== 'ALL') {
+                    matchMoo = checkMooMatch(p.name, mooFilter) || checkMooMatch(p.target, mooFilter);
+                }
+
+                let matchBudgetRange = true;
+                const amt = parseFloat(p.contractAmount) || parseFloat(p.budget) || 0;
+                if (budgetRangeFilter === '0-500k') matchBudgetRange = amt <= 500000;
+                else if (budgetRangeFilter === '500k-1m') matchBudgetRange = amt > 500000 && amt <= 1000000;
+                else if (budgetRangeFilter === '1m-5m') matchBudgetRange = amt > 1000000 && amt <= 5000000;
+                else if (budgetRangeFilter === '5m-10m') matchBudgetRange = amt > 5000000 && amt <= 10000000;
+                else if (budgetRangeFilter === '10m-30m') matchBudgetRange = amt > 10000000 && amt <= 30000000;
+                else if (budgetRangeFilter === 'over30m') matchBudgetRange = amt > 30000000;
+
+                let matchBudgetType = true;
+                if (budgetTypeFilter === 'UNSPECIFIED') {
+                    matchBudgetType = !p.budgetType;
+                } else if (budgetTypeFilter !== 'ALL') {
+                    matchBudgetType = p.budgetType === budgetTypeFilter;
+                }
+
+                const matchStatus = statusFilter === 'ALL' || p.status === statusFilter;
+
+                let matchContract = true;
+                const daysPassed = getDaysPassedFromStart(p.startDate);
+                const daysLeft = getDaysRemaining(p.endDate);
+                const kDaysLeft = getDaysRemaining(p.kDate);
+
+                if (contractFilter === 'URGENT_30') matchContract = daysPassed > 30 && p.status !== 'เสร็จสิ้น' && !p.urgentDone;
+                else if (contractFilter === 'WARN_30') matchContract = daysLeft !== null && daysLeft <= 30 && daysLeft >= 0 && p.status !== 'เสร็จสิ้น';
+                else if (contractFilter === 'OVERDUE') matchContract = daysLeft !== null && daysLeft < 0 && p.status !== 'เสร็จสิ้น';
+                else if (contractFilter === 'K_WARN') matchContract = kDaysLeft !== null && kDaysLeft <= 15 && !p.kDone;
+
+                return matchSearch && matchFiscalYear && matchMoo && matchBudgetRange && matchBudgetType && matchStatus && matchContract;
+            });
+
+            currentlyFilteredProjects.sort((a, b) => {
+                if (!a.signDate) return 1;
+                if (!b.signDate) return -1;
+                return new Date(a.signDate) - new Date(b.signDate);
+            });
+
+            projects.forEach(p => {
+                if (p.selected) selectedCount++;
+                totalContractSum += parseFloat(p.contractAmount || p.budget) || 0;
+                const daysPassed = getDaysPassedFromStart(p.startDate);
+                const kDaysLeft = getDaysRemaining(p.kDate);
+
+                if (daysPassed > 30 && p.status !== 'เสร็จสิ้น' && !p.urgentDone) urgentCount++;
+                if (kDaysLeft !== null && kDaysLeft <= 15 && !p.kDone) kWarningCount++;
+            });
+
+            document.getElementById('statTotal').innerText = totalCount;
+            document.getElementById('statTotalBudget').innerText = Number(totalContractSum.toFixed(2)).toLocaleString() + ' ฿';
+            document.getElementById('statUrgent').innerText = urgentCount;
+            document.getElementById('statKWarning').innerText = kWarningCount;
+            document.getElementById('statSelected').innerText = selectedCount;
+            document.getElementById('selectedDeleteCount').innerText = selectedCount;
+            document.getElementById('selectedBatchCount').innerText = selectedCount;
+
+            const selectAllBox = document.getElementById('selectAll');
+            if (selectAllBox) {
+                selectAllBox.checked = projects.length > 0 && projects.every(p => p.selected);
+            }
+
+            if (currentlyFilteredProjects.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-slate-400 font-medium">ไม่พบข้อมูลโครงการตามเงื่อนไขตัวกรอง</td></tr>`;
+                return;
+            }
+
+            currentlyFilteredProjects.forEach(p => {
+                const daysPassed = getDaysPassedFromStart(p.startDate);
+                const daysLeft = getDaysRemaining(p.endDate);
+                const kDaysLeft = getDaysRemaining(p.kDate);
+                const contractAmt = parseFloat(p.contractAmount) || 0;
+                const budgetAmt = parseFloat(p.budget) || 0;
+                const cDays = calculateConstructionDays(p.startDate, p.endDate);
+
+                let alertBadge = '';
+                let fineInfo = '';
+
+                if (p.status !== 'เสร็จสิ้น' && daysPassed > 30) {
+                    if (p.urgentDone) {
+                        alertBadge += `<span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 mt-1.5 inline-flex border border-emerald-200"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i> เร่งรัดแล้ว (${formatThaiBE(p.urgentDoneDate)})</span><br>`;
+                    } else {
+                        let stepText = 'ครั้งที่ 1 (ผ่านไป ' + daysPassed + ' วัน)';
+                        let colorStyle = 'bg-rose-50 text-rose-700 border-rose-200';
+                        
+                        if (daysPassed >= 75) {
+                            stepText = '🚨 ครั้งที่ 4 (ขั้นสุดท้าย! ผ่านไป ' + daysPassed + ' วัน)';
+                            colorStyle = 'bg-rose-500 text-white border-rose-600 font-bold';
+                        } else if (daysPassed >= 60) {
+                            stepText = '⚠️ ครั้งที่ 3 (+15 วัน / ผ่านไป ' + daysPassed + ' วัน)';
+                            colorStyle = 'bg-rose-100 text-rose-800 border-rose-300 font-bold';
+                        } else if (daysPassed >= 45) {
+                            stepText = '⚠️ ครั้งที่ 2 (+15 วัน / ผ่านไป ' + daysPassed + ' วัน)';
+                            colorStyle = 'bg-amber-100 text-amber-800 border-amber-300 font-bold';
+                        }
+
+                        alertBadge += `<span class="${colorStyle} text-xs px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 mt-1.5 inline-flex border animate-pulse"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> ต้องเร่งรัด ${stepText}</span><br>`;
+                    }
+                }
+
+                if (p.status !== 'เสร็จสิ้น' && daysLeft !== null) {
+                    if (daysLeft < 0) {
+                        const overdueDays = Math.abs(daysLeft);
+                        const rate = (p.fineRate !== undefined && p.fineRate !== null && p.fineRate !== '') ? parseFloat(p.fineRate) : 0;
+                        const dailyFine = (contractAmt * rate) / 100;
+                        const totalFine = dailyFine * overdueDays;
+
+                        alertBadge += `<span class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 mt-1.5 inline-flex border border-rose-200"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> เลยกำหนด ${overdueDays} วัน</span>`;
+                        fineInfo = `
+                            <div class="text-[11px] text-rose-700 bg-rose-50/80 p-2 rounded-xl border border-rose-200/80 mt-1 font-medium space-y-0.5">
+                                <div>ค่าปรับต่อวัน (${rate}%): <b>${Number(dailyFine.toFixed(2)).toLocaleString()} ฿</b></div>
+                                <div>ค่าปรับสะสม (${overdueDays} วัน): <b class="text-xs text-rose-800">${Number(totalFine.toFixed(2)).toLocaleString()} ฿</b></div>
+                            </div>
+                        `;
+                    } else if (daysLeft <= 30) {
+                        alertBadge += `<span class="bg-rose-50 text-rose-800 text-xs px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 mt-1.5 inline-flex border border-rose-200"><i data-lucide="clock" class="w-3.5 h-3.5"></i> เหลือสัญญา ${daysLeft} วัน</span>`;
+                    }
+                }
+
+                let kInfoHTML = '';
+                if (p.deliveryDate) {
+                    let kBadge = '';
+                    if (p.kDone) {
+                        kBadge = `<span class="bg-teal-50 text-teal-800 text-[11px] px-2 py-0.5 rounded-lg font-bold border border-teal-200 flex items-center gap-1 inline-flex"><i data-lucide="check-circle" class="w-3 h-3 text-teal-600"></i> ดำเนินการค่า K เรียบร้อย (${formatThaiBE(p.kDoneDate)})</span>`;
+                    } else if (kDaysLeft !== null) {
+                        if (kDaysLeft <= 0) {
+                            kBadge = `<span class="bg-purple-100 text-purple-800 text-[11px] px-2 py-0.5 rounded-lg font-bold border border-purple-200">🔔 ครบกำหนดคำนวณค่า K แล้ว!</span>`;
+                        } else if (kDaysLeft <= 15) {
+                            kBadge = `<span class="bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-lg font-bold border border-amber-200 animate-pulse">⚠️ ใกล้ครบกำหนดค่า K (เหลือ ${kDaysLeft} วัน)</span>`;
+                        }
+                    }
+
+                    kInfoHTML = `
+                        <div class="mt-2 text-xs bg-purple-50/70 p-2 rounded-xl border border-purple-100 text-purple-900 space-y-0.5">
+                            <div><span class="font-semibold">ส่งมอบงาน:</span> ${formatThaiBE(p.deliveryDate)}</div>
+                            <div><span class="font-semibold">ครบกำหนดค่า K (+90 วัน):</span> ${formatThaiBE(p.kDate)}</div>
+                            ${kBadge ? `<div class="mt-1">${kBadge}</div>` : ''}
+                        </div>
+                    `;
+                }
+
+                let commHTML = '-';
+                if (p.committees && p.committees.length > 0) {
+                    commHTML = p.committees.map(c => `<div class="text-xs text-slate-600"><span class="font-medium text-amber-800">${c.pos}:</span> ${c.name}</div>`).join('');
+                } else if (p.committee) {
+                    commHTML = `<div class="text-xs text-slate-600">${p.committee}</div>`;
+                }
+
+                let noteHTML = '';
+                if (p.note || p.note2 || p.note3) {
+                    noteHTML = `
+                        <div class="text-xs text-sky-900 bg-sky-50/60 p-2 rounded-xl border border-sky-100 mt-1 space-y-0.5">
+                            ${p.note ? `<div><span class="font-semibold text-sky-700">หมายเหตุ 1:</span> ${p.note}</div>` : ''}
+                            ${p.note2 ? `<div><span class="font-semibold text-sky-700">หมายเหตุ 2:</span> ${p.note2}</div>` : ''}
+                            ${p.note3 ? `<div><span class="font-semibold text-sky-700">หมายเหตุ 3:</span> ${p.note3}</div>` : ''}
+                        </div>
+                    `;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = `hover:bg-rose-50/20 transition ${p.selected ? 'bg-amber-50/40' : ''}`;
+                tr.innerHTML = `
+                    <td class="p-4 text-center">
+                        <input type="checkbox" ${p.selected ? 'checked' : ''} onchange="toggleSelect('${p.id}')" class="rounded border-slate-300 text-rose-500 focus:ring-rose-400 cursor-pointer w-4 h-4">
+                    </td>
+                    <td class="p-4">
+                        <div class="font-bold text-slate-800 leading-snug">${p.name}</div>
+                        <div class="text-xs text-slate-600 mt-1 bg-slate-50 p-2 rounded-xl border border-slate-100">
+                            <div><span class="font-semibold text-slate-700">เลขที่แบบ:</span> <span class="font-bold text-rose-700">${p.drawingNo || '-'}</span></div>
+                            <div class="mt-0.5"><span class="font-semibold text-slate-700">เป้าหมาย:</span> ${p.target || '-'}</div>
+                        </div>
+                        ${noteHTML}
+                        <div class="mt-2 bg-amber-50/40 p-2 rounded-xl border border-amber-100/80 space-y-0.5">
+                            <div class="text-[11px] font-bold text-amber-800 uppercase tracking-wider mb-0.5">คณะกรรมการตรวจรับพัสดุ:</div>
+                            ${commHTML}
+                        </div>
+                        <div class="text-xs text-slate-500 mt-1.5 flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i> ช่างควบคุมงาน: ${p.supervisor ? `<span class="font-semibold text-slate-700">${p.supervisor}</span>` : `<span class="italic text-rose-400 font-medium">ยังไม่ระบุ</span>`}</div>
+                    </td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                            <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-sky-100/70 text-sky-800 border border-sky-200/60">ปีงบ ${p.fiscalYear || '2569'}</span>
+                            <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${getBudgetTypeStyle(p.budgetType)}">${p.budgetType || 'ยังไม่ได้ระบุ'}</span>
+                        </div>
+                        <div class="text-xs text-slate-500">สัญญา: <span class="font-semibold text-slate-700">${p.contractNo || '-'}</span></div>
+                        <div class="text-xs text-slate-500">ลงนาม: <span class="font-medium text-slate-600">${formatThaiBE(p.signDate)}</span></div>
+                        
+                        <div class="mt-2 p-2 bg-slate-50/80 rounded-xl border border-slate-100 space-y-1">
+                            <div class="text-xs text-slate-500 flex justify-between">
+                                <span>งบประมาณ (ราคากลาง):</span>
+                                <span class="font-semibold text-sky-700">${budgetAmt ? Number(budgetAmt).toLocaleString() + ' ฿' : '-'}</span>
+                            </div>
+                            <div class="text-xs text-teal-800 font-bold flex justify-between border-t border-slate-200/60 pt-1">
+                                <span>วงเงินตามสัญญา:</span>
+                                <span class="text-teal-600 text-sm font-extrabold">${contractAmt ? Number(contractAmt).toLocaleString() + ' ฿' : '-'}</span>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-slate-500 mt-1.5"><i data-lucide="building-2" class="w-3 h-3 inline"></i> ${p.contractor || '-'}</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">คำสั่ง: ${p.orderNo || '-'} (${formatThaiBE(p.orderDate)})</div>
+                    </td>
+                    <td class="p-4">
+                        <div class="text-xs text-slate-600"><span class="text-slate-400">เริ่ม:</span> ${formatThaiBE(p.startDate)}</div>
+                        <div class="text-xs text-slate-600 mt-0.5"><span class="text-slate-400">สิ้นสุด:</span> ${formatThaiBE(p.endDate)}</div>
+                        <div class="text-xs text-sky-900 font-bold mt-1 bg-sky-50 px-2 py-0.5 rounded-lg border border-sky-100 inline-block">
+                            ระยะเวลาก่อสร้าง: ${cDays !== null ? `${cDays} วัน` : '-'}
+                        </div>
+                        ${alertBadge}
+                        ${fineInfo}
+                        ${kInfoHTML}
+                    </td>
+                    <td class="p-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold inline-block border ${getStatusStyle(p.status)}">
+                            ${p.status}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <button onclick="editProject('${p.id}')" class="p-2 hover:bg-slate-100 rounded-xl text-slate-600 transition" title="แก้ไข">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="deleteProject('${p.id}')" class="p-2 hover:bg-rose-50 rounded-xl text-rose-500 transition" title="ลบรายการนี้">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            lucide.createIcons();
+        }
+
+        function getBudgetTypeStyle(type) {
+            switch (type) {
+                case 'งบตั้งจ่ายเป็นรายการใหม่': return 'bg-teal-100/70 text-teal-800 border border-teal-200/60';
+                case 'งบเทศบัญญัติ': return 'bg-sky-100/70 text-sky-800 border border-sky-200/60';
+                case 'งบใช้จ่ายเงินสะสม': return 'bg-amber-100/70 text-amber-800 border border-amber-200/60';
+                case 'งบอุดหนุนเฉพาะกิจ': return 'bg-rose-100/70 text-rose-800 border border-rose-200/60';
+                case 'งบกองทุนไฟฟ้า': return 'bg-purple-100/70 text-purple-800 border border-purple-200/60';
+                default: return 'bg-slate-100 text-slate-500 border border-slate-200';
+            }
+        }
+
+        function getStatusStyle(status) {
+            switch (status) {
+                case 'เตรียมโครงการ': return 'bg-slate-100 text-slate-600 border-slate-200';
+                case 'ทำสัญญาแล้ว': return 'bg-sky-50 text-sky-700 border-sky-200';
+                case 'กำลังดำเนินการ': return 'bg-amber-50 text-amber-800 border-amber-200';
+                case 'เสร็จสิ้น': return 'bg-teal-50 text-teal-700 border-teal-200';
+                default: return 'bg-slate-100 text-slate-600 border-slate-200';
+            }
+        }
+
+        function toggleSelect(id) {
+            const project = projects.find(p => p.id === id);
+            if (project) {
+                project.selected = !project.selected;
+                saveToStorage();
+                renderTable();
+            }
+        }
+
+        function toggleSelectAll(master) {
+            projects.forEach(p => p.selected = master.checked);
+            saveToStorage();
+            renderTable();
+        }
+
+        function deleteSelected() {
+            const selectedCount = projects.filter(p => p.selected).length;
+            if (selectedCount === 0) {
+                alert('กรุณาเลือกรายการโครงการที่ต้องการลบก่อน');
+                return;
+            }
+
+            if (confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบโครงการที่เลือกทั้งหมด ${selectedCount} รายการ?`)) {
+                projects = projects.filter(p => !p.selected);
+                saveToStorage();
+                renderTable();
+                alert(`ลบรายการที่เลือกสำเร็จเรียบร้อยแล้ว`);
+            }
+        }
+
+        function deleteProject(id) {
+            if (confirm('คุณต้องการลบโครงการนี้ใช่หรือไม่?')) {
+                projects = projects.filter(p => !p.selected && p.id !== id);
+                saveToStorage();
+                renderTable();
+            }
+        }
+
+        /* --- ฟังก์ชันระบบ ส่งออกรายงานเป็นไฟล์ Word (ฟอนต์ TH Sarabun) ไม่ใช้ตาราง --- */
+        function exportWordReport() {
+            let targetProjects = projects.filter(p => p.selected);
+            if (targetProjects.length === 0) {
+                targetProjects = currentlyFilteredProjects;
+            }
+            if (targetProjects.length === 0) {
+                alert('ไม่พบรายการโครงการที่จะส่งออกข้อมูล');
+                return;
+            }
+
+            targetProjects.sort((a, b) => {
+                if (!a.signDate) return 1;
+                if (!b.signDate) return -1;
+                return new Date(a.signDate) - new Date(b.signDate);
+            });
+
+            let docHtmlHead = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+                      xmlns:w='urn:schemas-microsoft-com:office:word' 
+                      xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>รายงานสรุปโครงการงานกองช่าง</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page {
+                            size: A4 portrait;
+                            margin: 2.5cm 2.5cm 2.5cm 2.5cm;
+                        }
+                        body {
+                            font-family: 'TH SarabunPSK', 'TH Sarabun IT', 'Angsana New', sans-serif;
+                            font-size: 16pt;
+                            line-height: 1.25;
+                            color: #000;
+                        }
+                        p { margin: 3pt 0; text-align: justify; text-justify: inter-cluster; }
+                        .title { font-size: 18pt; font-weight: bold; text-align: center; margin-bottom: 4pt; }
+                        .subtitle { font-size: 14pt; text-align: center; margin-bottom: 18pt; color: #333; }
+                        .project-title { font-size: 16pt; font-weight: bold; margin-top: 14pt; margin-bottom: 6pt; border-bottom: 1pt solid #333; padding-bottom: 2pt; }
+                        .bold { font-weight: bold; }
+                        .indent { text-indent: 1.5cm; }
+                        .section-item { margin-left: 1.5cm; margin-top: 1pt; margin-bottom: 1pt; }
+                    </style>
+                </head>
+                <body>
+                    <p class="title">รายงานสรุปโครงการและการดำเนินงานกองช่าง</p>
+                    <p class="subtitle">เทศบาลตำบลหนองหัวแรต | วันที่รายงาน: ${formatThaiFullDate(new Date().toISOString().slice(0,10))}</p>
+            `;
+
+            let docBodyHtml = '';
+
+            targetProjects.forEach((p, idx) => {
+                const budgetAmt = p.budget ? Number(p.budget).toLocaleString() + ' บาท' : '-';
+                const contractAmt = p.contractAmount ? Number(p.contractAmount).toLocaleString() + ' บาท' : '-';
+                const cDays = calculateConstructionDays(p.startDate, p.endDate);
+
+                let commTextArr = [];
+                if (p.committees && p.committees.length > 0) {
+                    p.committees.forEach((c, cIdx) => {
+                        commTextArr.push(`${cIdx + 1}. ${c.name} (${c.pos})`);
+                    });
+                } else if (p.committee) {
+                    commTextArr.push(p.committee);
+                } else {
+                    commTextArr.push('ยังไม่ได้ระบุ');
+                }
+
+                docBodyHtml += `
+                    <div class="project-title">โครงการที่ ${idx + 1}: ${p.name}</div>
+                    
+                    <p class="indent"><span class="bold">เลขที่แบบ:</span> ${p.drawingNo || '-'}</p>
+                    <p class="indent"><span class="bold">เป้าหมายโครงการ:</span> ${p.target || '-'}</p>
+                    <p class="indent"><span class="bold">ปีงบประมาณ:</span> พ.ศ. ${p.fiscalYear || '2569'} &nbsp;&nbsp;|&nbsp;&nbsp; <span class="bold">ประเภทงบประมาณ:</span> ${p.budgetType || 'ยังไม่ได้ระบุ'}</p>
+                    <p class="indent"><span class="bold">วงเงินงบประมาณ (ราคากลาง):</span> ${budgetAmt} &nbsp;&nbsp;|&nbsp;&nbsp; <span class="bold">วงเงินตามสัญญา:</span> ${contractAmt}</p>
+                    <p class="indent"><span class="bold">เลขที่สัญญา:</span> ${p.contractNo || '-'} &nbsp;&nbsp;|&nbsp;&nbsp; <span class="bold">วันที่ลงนามสัญญา:</span> ${formatThaiFullDate(p.signDate)}</p>
+                    <p class="indent"><span class="bold">ระยะเวลาสัญญา:</span> ตั้งแต่วันที่ ${formatThaiFullDate(p.startDate)} ถึงวันที่ ${formatThaiFullDate(p.endDate)} (${cDays !== null ? cDays + ' วัน' : '-'})</p>
+                    <p class="indent"><span class="bold">ผู้รับจ้าง:</span> ${p.contractor || '-'}</p>
+                    <p class="indent"><span class="bold">วันส่งมอบงานจริง:</span> ${formatThaiFullDate(p.deliveryDate)} &nbsp;&nbsp;|&nbsp;&nbsp; <span class="bold">วันสิ้นสุดการคำนวณค่า K (+90 วัน):</span> ${formatThaiFullDate(p.kDate)} ${p.kDone ? '(ดำเนินการแล้ว)' : ''}</p>
+                    <p class="indent"><span class="bold">คำสั่งแต่งตั้งคณะกรรมการ:</span> เลขที่ ${p.orderNo || '-'} ลงวันที่ ${formatThaiFullDate(p.orderDate)}</p>
+                    <p class="indent"><span class="bold">คณะกรรมการตรวจรับพัสดุ:</span></p>
+                `;
+
+                commTextArr.forEach(commItem => {
+                    docBodyHtml += `<p class="section-item">• ${commItem}</p>`;
+                });
+
+                docBodyHtml += `
+                    <p class="indent"><span class="bold">ช่างผู้ควบคุมงาน:</span> ${p.supervisor || 'ยังไม่ระบุ'}</p>
+                    <p class="indent"><span class="bold">สถานะโครงการ:</span> ${p.status}</p>
+                `;
+
+                if (p.note || p.note2 || p.note3) {
+                    docBodyHtml += `<p class="indent"><span class="bold">หมายเหตุ:</span></p>`;
+                    if (p.note) docBodyHtml += `<p class="section-item">- หมายเหตุ 1: ${p.note}</p>`;
+                    if (p.note2) docBodyHtml += `<p class="section-item">- หมายเหตุ 2: ${p.note2}</p>`;
+                    if (p.note3) docBodyHtml += `<p class="section-item">- หมายเหตุ 3: ${p.note3}</p>`;
+                }
+
+                docBodyHtml += `<p style="margin-bottom: 16pt;"></p>`;
+            });
+
+            let docHtmlEnd = `</body></html>`;
+            let fullHtml = docHtmlHead + docBodyHtml + docHtmlEnd;
+
+            const blob = new Blob([fullHtml], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `รายงานโครงการ_งานกองช่าง_THSarabun_${new Date().toISOString().slice(0,10)}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        /* --- ฟังก์ชันระบบ ออกหนังสือเร่งรัดงาน Word (.doc) พร้อมตราครุฑ --- */
+        function openUrgentLetterModal() {
+            const selectedProjects = projects.filter(p => p.selected);
+            if (selectedProjects.length === 0) {
+                alert('กรุณาติ๊กเลือกโครงการที่ต้องการออกหนังสือเร่งรัดอย่างน้อย 1 รายการ');
+                return;
+            }
+
+            const names = selectedProjects.map(p => `• ${p.name}`).join('<br>');
+            document.getElementById('urgentProjectNameList').innerHTML = names;
+
+            const firstPrj = selectedProjects[0];
+            const daysPassed = getDaysPassedFromStart(firstPrj.startDate);
+            let defaultLevel = "1";
+            if (daysPassed >= 75) defaultLevel = "4";
+            else if (daysPassed >= 60) defaultLevel = "3";
+            else if (daysPassed >= 45) defaultLevel = "2";
+
+            document.getElementById('letterLevelInput').value = defaultLevel;
+
+            const today = new Date().toISOString().slice(0, 10);
+            document.getElementById('letterDateInput').value = today;
+
+            document.getElementById('urgentLetterModal').classList.remove('hidden');
+            document.getElementById('urgentLetterModal').classList.add('flex');
+        }
+
+        function closeUrgentLetterModal() {
+            document.getElementById('urgentLetterModal').classList.add('hidden');
+            document.getElementById('urgentLetterModal').classList.remove('flex');
+        }
+
+        function generateUrgentWordDoc() {
+            const selectedProjects = projects.filter(p => p.selected);
+            if (selectedProjects.length === 0) return;
+
+            const letterLevel = document.getElementById('letterLevelInput').value;
+            const letterNo = document.getElementById('letterNoInput').value.trim();
+            const letterDateVal = document.getElementById('letterDateInput').value;
+            const formattedLetterDate = formatThaiFullDate(letterDateVal);
+
+            let subjectTitle = "เร่งรัดการเข้าดำเนินการตามสัญญาจ้าง";
+            let warningTextHeader = "บัดนี้ ระยะเวลาตามสัญญาจ้างได้ล่วงเลยมาแล้ว";
+            let warningTextDetail = "จึงขอแจ้งให้ท่านเร่งรัดจัดส่งเจ้าหน้าที่และเครื่องจักรเข้าดำเนินการก่อสร้างตามโครงการดังกล่าวให้แล้วเสร็จตามข้อกำหนดและเงื่อนไขแห่งสัญญาโดยด่วนที่สุด";
+
+            if (letterLevel === "2") {
+                subjectTitle = "เร่งรัดการเข้าดำเนินการตามสัญญาจ้าง (ครั้งที่ 2)";
+                warningTextHeader = "ตามที่เทศบาลตำบลหนองหัวแรตได้มีหนังสือแจ้งเร่งรัดท่านมาแล้วนั้น บัดนี้เวลาได้ล่วงเลยมาอีก 15 วัน";
+                warningTextDetail = "จึงขอแจ้งเร่งรัดกวดขันให้ท่านเข้าดำเนินการก่อสร้างตามโครงการโดยด่วนที่สุด หากยังคงเพิกเฉย เทศบาลจะดำเนินการตามระเบียบของทางราชการต่อไป";
+            } else if (letterLevel === "3") {
+                subjectTitle = "เร่งรัดการเข้าดำเนินการตามสัญญาจ้าง (ครั้งที่ 3)";
+                warningTextHeader = "ตามที่เทศบาลตำบลหนองหัวแรตได้มีหนังสือแจ้งเร่งรัดให้ท่านเข้าดำเนินการแล้ว 2 ครั้งนั้น บัดนี้เวลาได้ล่วงเลยมาอีก 15 วัน";
+                warningTextDetail = "จึงขอแจ้งเตือนและเร่งรัดให้ท่านเข้าดำเนินการโดยด่วนที่สุด มิฉะนั้นเทศบาลจำเป็นต้องพิจารณาดำเนินการตามมาตรการทางกฎหมายและระเบียบพัสดุ";
+            } else if (letterLevel === "4") {
+                subjectTitle = "เร่งรัดการเข้าดำเนินการตามสัญญาจ้าง (ครั้งที่ 4 - เตือนขั้นสุดท้าย)";
+                warningTextHeader = "ตามที่เทศบาลตำบลหนองหัวแรตได้มีหนังสือแจ้งเร่งรัดให้ท่านเข้าดำเนินการแล้ว 3 ครั้งนั้น บัดนี้เวลาได้ล่วงเลยมาอีก 15 วัน";
+                warningTextDetail = "จึงขอแจ้งเตือนเป็นครั้งสุดท้ายให้ท่านเข้าดำเนินการภายใน 7 วัน นับแต่วันที่ได้รับหนังสือนี้ หากพ้นกำหนดเทศบาลจะดำเนินการยกเลิกสัญญาและริบหลักประกันสัญญาต่อไป";
+            }
+
+            let docHtmlHead = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+                      xmlns:w='urn:schemas-microsoft-com:office:word' 
+                      xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>หนังสือเร่งรัดดำเนินการ</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page {
+                            size: A4 portrait;
+                            margin: 2.5cm 2.5cm 2.5cm 2.5cm;
+                        }
+                        body {
+                            font-family: 'TH SarabunPSK', 'TH Sarabun IT', 'Angsana New', sans-serif;
+                            font-size: 16pt;
+                            line-height: 1.25;
+                            color: #000;
+                        }
+                        p { margin: 0; padding: 0; text-align: justify; text-justify: inter-cluster; }
+                        .center { text-align: center; }
+                        .bold { font-weight: bold; }
+                        .indent { text-indent: 2.5cm; }
+                        .page-break { page-break-before: always; }
+                    </style>
+                </head>
+                <body>
+            `;
+
+            let docBodyHtml = '';
+
+            selectedProjects.forEach((p, idx) => {
+                const contractorName = p.contractor || 'ผู้รับจ้าง';
+                const contractNo = p.contractNo ? `เลขที่ ${p.contractNo}` : 'สัญญาจ้าง';
+                const signDateText = formatThaiFullDate(p.signDate);
+                const startDateText = formatThaiFullDate(p.startDate);
+                const endDateText = formatThaiFullDate(p.endDate);
+                const supervisorName = p.supervisor || '........................................................';
+                const amtShow = p.contractAmount ? p.contractAmount : (p.budget ? p.budget : 0);
+
+                if (idx > 0) {
+                    docBodyHtml += `<div class="page-break"></div>`;
+                }
+
+                docBodyHtml += `
+                    <div class="center" style="margin-bottom: 5pt;">
+                        <img src="${krutSvgBase64}" width="60" height="60" alt="ตราครุฑ" />
+                    </div>
+
+                    <p class="center" style="font-size: 18pt; font-weight: bold; margin-bottom: 14pt;">บันทึกข้อความ</p>
+                    
+                    <table border="0" width="100%" style="font-family: inherit; font-size: inherit; margin-bottom: 6pt;">
+                        <tr>
+                            <td width="15%"><span class="bold">ส่วนราชการ</span></td>
+                            <td width="85%">กองช่าง เทศบาลตำบลหนองหัวแรต โทร. 0-44... ต่อ ...</td>
+                        </tr>
+                        <tr>
+                            <td><span class="bold">ที่</span></td>
+                            <td>${letterNo || 'นม 54204/..............'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="bold">วันที่</span> ${formattedLetterDate}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="bold">เรื่อง</span></td>
+                            <td><span class="bold">${subjectTitle}</span></td>
+                        </tr>
+                    </table>
+
+                    <p style="margin-bottom: 12pt;"><span class="bold">เรียน</span> ${contractorName}</p>
+
+                    <p class="indent" style="margin-bottom: 10pt;">
+                        ตามที่ ท่านได้ตกลงทำสัญญาจ้างก่อสร้างกับเทศบาลตำบลหนองหัวแรต ตามสัญญาจ้าง${contractNo} ลงวันที่ ${signDateText} โครงการ <span class="bold">${p.name}</span> เป้าหมาย ${p.target || '-'} วงเงินตามสัญญา ${amtShow ? Number(amtShow).toLocaleString() : '0'} บาท (${amtShow ? Number(amtShow).toLocaleString() : '0'} บาทถ้วน) กำหนดระยะเวลาดำเนินการตั้งแต่วันที่ ${startDateText} ถึงวันที่ ${endDateText} นั้น
+                    </p>
+
+                    <p class="indent" style="margin-bottom: 10pt;">
+                        ${warningTextHeader} แต่จากการตรวจสอบของช่างผู้ควบคุมงาน (${supervisorName}) พบว่าท่านยังไม่ได้เข้าดำเนินการก่อสร้างตามรายการในสัญญาให้เป็นไปตามแผนงานที่กำหนด ซึ่งอาจส่งผลกระทบต่อประโยชน์ของทางราชการและสร้างความเดือดร้อนในการสัญจรของประชาชนในพื้นที่
+                    </p>
+
+                    <p class="indent" style="margin-bottom: 24pt;">
+                        ดังนั้น กองช่าง เทศบาลตำบลหนองหัวแรต ${warningTextDetail}
+                    </p>
+
+                    <p class="indent" style="margin-bottom: 35pt;">จึงเรียนมาเพื่อโปรดทราบและพิจารณาดำเนินการโดยด่วน</p>
+
+                    <table border="0" width="100%" style="font-family: inherit; font-size: inherit;">
+                        <tr>
+                            <td width="50%"></td>
+                            <td width="50%" class="center">
+                                <p style="margin-bottom: 35pt;">ลงชื่อ........................................................</p>
+                                <p class="bold">(${supervisorName})</p>
+                                <p>ตำแหน่ง ช่างผู้ควบคุมงาน / นายช่างชำนาญงาน</p>
+                            </td>
+                        </tr>
+                    </table>
+                `;
+            });
+
+            let docHtmlEnd = `</body></html>`;
+            let fullHtml = docHtmlHead + docBodyHtml + docHtmlEnd;
+
+            const blob = new Blob([fullHtml], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            
+            const firstPrjName = selectedProjects[0].name.replace(/[^a-zA-Z0-9ก-๙]/g, '_').substring(0, 30);
+            a.download = `หนังสือเร่งรัด_ครั้งที่${letterLevel}_${firstPrjName}.doc`;
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            closeUrgentLetterModal();
+        }
+
+        /* --- ฟังก์ชันระบบ Batch Edit --- */
+        function openBatchEditModal() {
+            const selectedCount = projects.filter(p => p.selected).length;
+            if (selectedCount === 0) {
+                alert('กรุณาเลือกรายการโครงการอย่างน้อย 1 รายการเพื่อแก้ไขพร้อมกัน');
+                return;
+            }
+            document.getElementById('batchCountText').innerText = selectedCount;
+            document.getElementById('batchEditForm').reset();
+            document.getElementById('batch_supervisor').value = '';
+            document.getElementById('batchEditModal').classList.remove('hidden');
+            document.getElementById('batchEditModal').classList.add('flex');
+        }
+
+        function closeBatchModal() {
+            document.getElementById('batchEditModal').classList.add('hidden');
+            document.getElementById('batchEditModal').classList.remove('flex');
+        }
+
+        function saveBatchEdit(e) {
+            e.preventDefault();
+
+            const isFiscalYear = document.getElementById('chk_fiscalYear').checked;
+            const isDrawingNo = document.getElementById('chk_drawingNo').checked;
+            const isBudgetType = document.getElementById('chk_budgetType').checked;
+            const isStatus = document.getElementById('chk_status').checked;
+            const isSignDate = document.getElementById('chk_signDate').checked;
+            const isStartDate = document.getElementById('chk_startDate').checked;
+            const isEndDate = document.getElementById('chk_endDate').checked;
+            const isDeliveryDate = document.getElementById('chk_deliveryDate').checked;
+            const isContractor = document.getElementById('chk_contractor').checked;
+            const isOrderNo = document.getElementById('chk_orderNo').checked;
+            const isOrderDate = document.getElementById('chk_orderDate').checked;
+            const isSupervisor = document.getElementById('chk_supervisor').checked;
+            const isCommittees = document.getElementById('chk_committees').checked;
+
+            if (!isFiscalYear && !isDrawingNo && !isBudgetType && !isStatus && !isSignDate && !isStartDate && !isEndDate && !isDeliveryDate && !isContractor && !isOrderNo && !isOrderDate && !isSupervisor && !isCommittees) {
+                alert('กรุณาติ๊กเลือกช่องที่ต้องการแก้ไขอย่างน้อย 1 หัวข้อ');
+                return;
+            }
+
+            let updatedCount = 0;
+
+            let batchCommittees = [];
+            if (isCommittees) {
+                for (let i = 0; i < 5; i++) {
+                    const name = document.getElementById(`batch_commName_${i}`).value.trim();
+                    const pos = document.getElementById(`batch_commPos_${i}`).value;
+                    if (name) {
+                        batchCommittees.push({ name, pos });
+                    }
+                }
+            }
+
+            projects.forEach(p => {
+                if (p.selected) {
+                    if (isFiscalYear) p.fiscalYear = document.getElementById('batch_fiscalYear').value;
+                    if (isDrawingNo) p.drawingNo = document.getElementById('batch_drawingNo').value;
+                    if (isBudgetType) p.budgetType = document.getElementById('batch_budgetType').value;
+                    if (isStatus) p.status = document.getElementById('batch_status').value;
+                    if (isSignDate) p.signDate = document.getElementById('batch_signDate').value;
+                    if (isStartDate) p.startDate = document.getElementById('batch_startDate').value;
+                    if (isEndDate) p.endDate = document.getElementById('batch_endDate').value;
+                    if (isDeliveryDate) {
+                        p.deliveryDate = document.getElementById('batch_deliveryDate').value;
+                        if (p.deliveryDate) {
+                            const d = new Date(p.deliveryDate);
+                            d.setDate(d.getDate() + 90);
+                            const year = d.getFullYear();
+                            const month = String(d.getMonth() + 1).padStart(2, '0');
+                            const day = String(d.getDate()).padStart(2, '0');
+                            p.kDate = `${year}-${month}-${day}`;
+                        } else {
+                            p.kDate = '';
+                        }
+                    }
+                    if (isContractor) p.contractor = document.getElementById('batch_contractor').value;
+                    if (isOrderNo) p.orderNo = document.getElementById('batch_orderNo').value;
+                    if (isOrderDate) p.orderDate = document.getElementById('batch_orderDate').value;
+                    if (isSupervisor) p.supervisor = document.getElementById('batch_supervisor').value;
+                    if (isCommittees) p.committees = batchCommittees;
+
+                    updatedCount++;
+                }
+            });
+
+            saveToStorage();
+            renderTable();
+            closeBatchModal();
+            alert(`อัปเดตข้อมูลสำเร็จเรียบร้อยแล้ว จำนวน ${updatedCount} รายการ`);
+        }
+
+        function backupData() {
+            if (projects.length === 0) {
+                alert('ไม่มีข้อมูลโครงการสำหรับสำรองข้อมูล');
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projects, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `BACKUP_โครงการกองช่าง_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+
+        function restoreData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const restoredProjects = JSON.parse(evt.target.result);
+                    if (Array.isArray(restoredProjects)) {
+                        if (confirm(`ตรวจพบข้อมูลทั้งหมด ${restoredProjects.length} รายการ คุณต้องการฟื้นฟูข้อมูลทับรายการเดิมใช่หรือไม่?`)) {
+                            projects = restoredProjects;
+                            saveToStorage();
+                            renderTable();
+                            alert('ฟื้นฟูข้อมูลสำเร็จเรียบร้อยแล้ว!');
+                        }
+                    } else {
+                        alert('รูปแบบไฟล์ JSON ไม่ถูกต้อง');
+                    }
+                } catch (err) {
+                    alert('เกิดข้อผิดพลาดในการอ่านไฟล์สำรองข้อมูล JSON');
+                }
+                document.getElementById('jsonFileInput').value = '';
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        function openModal(isEdit = false) {
+            document.getElementById('modalTitle').innerText = isEdit ? 'แก้ไขข้อมูลโครงการและงบประมาณ' : 'เพิ่มโครงการใหม่';
+            if (!isEdit) {
+                document.getElementById('projectForm').reset();
+                document.getElementById('projectId').value = '';
+                document.getElementById('fiscalYear').value = '2569';
+                document.getElementById('drawingNo').value = '';
+                document.getElementById('constructionDays').value = '';
+                document.getElementById('fineRate').value = '0';
+                document.getElementById('budget').value = '';
+                document.getElementById('contractAmount').value = '';
+                document.getElementById('budgetType').value = '';
+                document.getElementById('deliveryDate').value = '';
+                document.getElementById('kDate').value = '';
+                document.getElementById('kDone').checked = false;
+                document.getElementById('kDoneDate').value = '';
+                document.getElementById('urgentDone').checked = false;
+                document.getElementById('urgentDoneDate').value = '';
+                document.getElementById('note').value = '';
+                document.getElementById('note2').value = '';
+                document.getElementById('note3').value = '';
+                document.getElementById('supervisor').value = '';
+                
+                for (let i = 0; i < 5; i++) {
+                    document.getElementById(`commName_${i}`).value = '';
+                }
+            }
+            document.getElementById('projectModal').classList.remove('hidden');
+            document.getElementById('projectModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').classList.add('hidden');
+            document.getElementById('projectModal').classList.remove('flex');
+        }
+
+        function saveProject(e) {
+            e.preventDefault();
+            const id = document.getElementById('projectId').value;
+
+            const committees = [];
+            for (let i = 0; i < 5; i++) {
+                const name = document.getElementById(`commName_${i}`).value.trim();
+                const pos = document.getElementById(`commPos_${i}`).value;
+                if (name) {
+                    committees.push({ name, pos });
+                }
+            }
+
+            const budgetVal = document.getElementById('budget').value !== '' ? parseFloat(document.getElementById('budget').value) : 0;
+            const contractAmtVal = document.getElementById('contractAmount').value !== '' ? parseFloat(document.getElementById('contractAmount').value) : 0;
+            const fineRateInput = document.getElementById('fineRate').value;
+            const fineRateVal = (fineRateInput !== '' && fineRateInput !== null && fineRateInput !== undefined) ? parseFloat(fineRateInput) : 0;
+
+            const data = {
+                id: id || 'PRJ-' + Date.now(),
+                fiscalYear: document.getElementById('fiscalYear').value || '2569',
+                drawingNo: document.getElementById('drawingNo').value.trim(),
+                name: document.getElementById('projectName').value,
+                target: document.getElementById('target').value,
+                note: document.getElementById('note').value,
+                note2: document.getElementById('note2').value,
+                note3: document.getElementById('note3').value,
+                contractNo: document.getElementById('contractNo').value,
+                signDate: document.getElementById('signDate').value,
+                budgetType: document.getElementById('budgetType').value,
+                budget: budgetVal,
+                contractAmount: contractAmtVal,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                deliveryDate: document.getElementById('deliveryDate').value,
+                kDate: document.getElementById('kDate').value,
+                kDone: document.getElementById('kDone').checked,
+                kDoneDate: document.getElementById('kDoneDate').value,
+                urgentDone: document.getElementById('urgentDone').checked,
+                urgentDoneDate: document.getElementById('urgentDoneDate').value,
+                fineRate: fineRateVal,
+                contractor: document.getElementById('contractor').value,
+                orderNo: document.getElementById('orderNo').value,
+                orderDate: document.getElementById('orderDate').value,
+                committees: committees,
+                status: document.getElementById('status').value,
+                supervisor: document.getElementById('supervisor').value,
+                selected: false
+            };
+
+            if (id) {
+                const idx = projects.findIndex(p => p.id === id);
+                if (idx !== -1) projects[idx] = { ...projects[idx], ...data };
+            } else {
+                projects.push(data);
+            }
+
+            saveToStorage();
+            renderTable();
+            closeModal();
+        }
+
+        function editProject(id) {
+            const p = projects.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('projectId').value = p.id;
+            document.getElementById('fiscalYear').value = p.fiscalYear || '2569';
+            document.getElementById('drawingNo').value = p.drawingNo || '';
+            document.getElementById('projectName').value = p.name;
+            document.getElementById('target').value = p.target || '';
+            document.getElementById('note').value = p.note || '';
+            document.getElementById('note2').value = p.note2 || '';
+            document.getElementById('note3').value = p.note3 || '';
+            document.getElementById('contractNo').value = p.contractNo || '';
+            document.getElementById('signDate').value = p.signDate || '';
+            document.getElementById('budgetType').value = p.budgetType || '';
+            document.getElementById('budget').value = p.budget !== undefined && p.budget !== null ? p.budget : '';
+            document.getElementById('contractAmount').value = p.contractAmount !== undefined && p.contractAmount !== null ? p.contractAmount : '';
+            document.getElementById('startDate').value = p.startDate || '';
+            document.getElementById('endDate').value = p.endDate || '';
+            autoCalculateDays();
+            document.getElementById('deliveryDate').value = p.deliveryDate || '';
+            document.getElementById('kDate').value = p.kDate || '';
+            document.getElementById('kDone').checked = !!p.kDone;
+            document.getElementById('kDoneDate').value = p.kDoneDate || '';
+            document.getElementById('urgentDone').checked = !!p.urgentDone;
+            document.getElementById('urgentDoneDate').value = p.urgentDoneDate || '';
+            document.getElementById('fineRate').value = (p.fineRate !== undefined && p.fineRate !== null && p.fineRate !== '') ? p.fineRate : 0;
+            document.getElementById('contractor').value = p.contractor || '';
+            document.getElementById('orderNo').value = p.orderNo || '';
+            document.getElementById('orderDate').value = p.orderDate || '';
+            document.getElementById('status').value = p.status;
+            document.getElementById('supervisor').value = p.supervisor || '';
+
+            for (let i = 0; i < 5; i++) {
+                if (p.committees && p.committees[i]) {
+                    document.getElementById(`commName_${i}`).value = p.committees[i].name || '';
+                    document.getElementById(`commPos_${i}`).value = p.committees[i].pos || 'กรรมการ';
+                } else {
+                    document.getElementById(`commName_${i}`).value = '';
+                }
+            }
+
+            openModal(true);
+        }
+
+        function parseFullCSV(text) {
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i + 1];
+
+                if (char === '"' && inQuotes && nextChar === '"') {
+                    currentCell += '"';
+                    i++;
+                } else if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    currentRow.push(currentCell.trim());
+                    currentCell = '';
+                } else if ((char === '\r' || char === '\n') && !inQuotes) {
+                    if (char === '\r' && nextChar === '\n') i++;
+                    currentRow.push(currentCell.trim());
+                    if (currentRow.length > 1 || currentRow[0] !== '') {
+                        rows.push(currentRow);
+                    }
+                    currentRow = [];
+                    currentCell = '';
+                } else {
+                    currentCell += char;
+                }
+            }
+            if (currentCell || currentRow.length > 0) {
+                currentRow.push(currentCell.trim());
+                rows.push(currentRow);
+            }
+            return rows;
+        }
+
+        function parseBudgetNumber(val) {
+            if (!val) return 0;
+            const cleaned = val.toString().replace(/[^0-9.]/g, '');
+            return parseFloat(cleaned) || 0;
+        }
+
+        function importCSV(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const text = evt.target.result;
+                const rows = parseFullCSV(text);
+
+                if (rows.length < 2) {
+                    alert('ไฟล์ CSV ไม่มีข้อมูล');
+                    return;
+                }
+
+                const headers = rows[0].map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+                
+                let nameIdx = headers.findIndex(h => h.includes('ชื่อโครงการ') || h.includes('รายการ') || h.includes('โครงการ'));
+                let drawingIdx = headers.findIndex(h => h.includes('เลขที่แบบ') || h.includes('แบบ'));
+                let budgetIdx = headers.findIndex(h => h.includes('วงเงินงบประมาณ') || h.includes('ราคากลาง'));
+                let contractAmtIdx = headers.findIndex(h => h.includes('วงเงินตามสัญญา') || h.includes('สัญญา'));
+                let targetIdx = headers.findIndex(h => h.includes('เป้าหมาย') || h.includes('รายละเอียด'));
+                let fiscalYearIdx = headers.findIndex(h => h.includes('ปีงบประมาณ') || h.includes('ปีงบ'));
+
+                if (nameIdx === -1) nameIdx = 2;
+                if (budgetIdx === -1) budgetIdx = 6;
+                if (targetIdx === -1) targetIdx = 4;
+
+                let count = 0;
+
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    
+                    const nameVal = row[nameIdx] ? row[nameIdx].replace(/^"|"$/g, '').trim() : (row[2] ? row[2].replace(/^"|"$/g, '').trim() : '');
+                    const drawingVal = drawingIdx !== -1 && row[drawingIdx] ? row[drawingIdx].replace(/^"|"$/g, '').trim() : '';
+                    const targetVal = row[targetIdx] ? row[targetIdx].replace(/^"|"$/g, '').trim() : '';
+                    const budgetVal = parseBudgetNumber(row[budgetIdx]);
+                    const contractAmtVal = contractAmtIdx !== -1 ? parseBudgetNumber(row[contractAmtIdx]) : 0;
+                    const yearVal = fiscalYearIdx !== -1 && row[fiscalYearIdx] ? row[fiscalYearIdx].replace(/[^0-9]/g, '') : '2569';
+
+                    if (nameVal) {
+                        projects.push({
+                            id: 'PRJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                            fiscalYear: yearVal || '2569',
+                            drawingNo: drawingVal,
+                            name: nameVal,
+                            target: targetVal,
+                            note: '',
+                            note2: '',
+                            note3: '',
+                            contractNo: '',
+                            signDate: '',
+                            budgetType: '',
+                            budget: budgetVal,
+                            contractAmount: contractAmtVal,
+                            startDate: '',
+                            endDate: '',
+                            deliveryDate: '',
+                            kDate: '',
+                            kDone: false,
+                            kDoneDate: '',
+                            urgentDone: false,
+                            urgentDoneDate: '',
+                            fineRate: 0,
+                            contractor: '',
+                            orderNo: '',
+                            orderDate: '',
+                            committees: [],
+                            status: 'เตรียมโครงการ',
+                            supervisor: '',
+                            selected: false
+                        });
+                        count++;
+                    }
+                }
+
+                saveToStorage();
+                renderTable();
+                alert(`นำเข้าข้อมูลสำเร็จเรียบร้อยแล้ว จำนวน ${count} รายการ`);
+                document.getElementById('csvFileInput').value = '';
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        function exportCSV(selectedOnly = false) {
+            let targetProjects = projects;
+
+            if (selectedOnly) {
+                targetProjects = projects.filter(p => p.selected);
+                if (targetProjects.length === 0) {
+                    alert('กรุณาติ๊กเลือกรายการโครงการที่ต้องการส่งออกก่อน');
+                    return;
+                }
+            } else if (projects.length === 0) {
+                alert('ไม่มีข้อมูลสำหรับส่งออก');
+                return;
+            }
+
+            let csvContent = "\uFEFF";
+            csvContent += "ID,ปีงบประมาณ,เลขที่แบบ,ชื่อโครงการ,เป้าหมาย,หมายเหตุ1,หมายเหตุ2,หมายเหตุ3,เลขที่สัญญา,วันลงนามสัญญา,ประเภทงบประมาณ,วงเงินงบประมาณ,วงเงินตามสัญญา,วันเริ่มสัญญา,วันสิ้นสุดสัญญา,จำนวนวันก่อสร้าง(วัน),เร่งรัดแล้ว,วันที่เร่งรัด,วันส่งมอบงาน,วันสิ้นสุดค่าK,ค่าKดำเนินการแล้ว,วันที่ดำเนินการค่าK,อัตราค่าปรับต่อวัน(%),ผู้รับจ้าง,เลขที่คำสั่ง,วันที่คำสั่ง,คณะกรรมการตรวจรับ,สถานะ,ผู้ควบคุมงาน\n";
+
+            targetProjects.forEach(p => {
+                const commText = p.committees ? p.committees.map(c => `${c.pos}:${c.name}`).join(' | ') : '';
+                const cDays = calculateConstructionDays(p.startDate, p.endDate);
+                const row = [
+                    `"${p.id}"`,
+                    `"${p.fiscalYear || '2569'}"`,
+                    `"${p.drawingNo || ''}"`,
+                    `"${(p.name || '').replace(/"/g, '""')}"`,
+                    `"${(p.target || '').replace(/"/g, '""')}"`,
+                    `"${(p.note || '').replace(/"/g, '""')}"`,
+                    `"${(p.note2 || '').replace(/"/g, '""')}"`,
+                    `"${(p.note3 || '').replace(/"/g, '""')}"`,
+                    `"${p.contractNo || ''}"`,
+                    `"${p.signDate || ''}"`,
+                    `"${p.budgetType || ''}"`,
+                    p.budget || 0,
+                    p.contractAmount || 0,
+                    `"${p.startDate || ''}"`,
+                    `"${p.endDate || ''}"`,
+                    cDays !== null ? cDays : 0,
+                    p.urgentDone ? "ใช่" : "ไม่ใช่",
+                    `"${p.urgentDoneDate || ''}"`,
+                    `"${p.deliveryDate || ''}"`,
+                    `"${p.kDate || ''}"`,
+                    p.kDone ? "ใช่" : "ไม่ใช่",
+                    `"${p.kDoneDate || ''}"`,
+                    (p.fineRate !== undefined && p.fineRate !== null && p.fineRate !== '') ? p.fineRate : 0,
+                    `"${(p.contractor || '').replace(/"/g, '""')}"`,
+                    `"${p.orderNo || ''}"`,
+                    `"${p.orderDate || ''}"`,
+                    `"${commText.replace(/"/g, '""')}"`,
+                    `"${p.status}"`,
+                    `"${p.supervisor || ''}"`
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            const fileName = selectedOnly 
+                ? `โครงการกองช่าง_เฉพาะที่เลือก_${new Date().toISOString().slice(0,10)}.csv`
+                : `โครงการกองช่าง_ทั้งหมด_${new Date().toISOString().slice(0,10)}.csv`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function printSelected() {
+            const selectedProjects = projects.filter(p => p.selected);
+            if (selectedProjects.length === 0) {
+                alert('กรุณาเลือกโครงการที่ต้องการพิมพ์รายงานอย่างน้อย 1 รายการ');
+                return;
+            }
+
+            selectedProjects.sort((a, b) => {
+                if (!a.signDate) return 1;
+                if (!b.signDate) return -1;
+                return new Date(a.signDate) - new Date(b.signDate);
+            });
+
+            const printWindow = window.open('', '_blank');
+            let printContent = `
+                <html>
+                <head>
+                    <title>รายงานติดตามโครงการและสัญญา งานกองช่าง - เทศบาลตำบลหนองหัวแรต</title>
+                    <style>
+                        body { font-family: 'Prompt', sans-serif; padding: 25px; color: #1e293b; }
+                        h2 { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+                        p { font-size: 13px; color: #64748b; margin-top: 0; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid #e2e8f0; padding: 8px 10px; text-align: left; font-size: 11px; }
+                        th { background-color: #f8fafc; font-weight: bold; color: #334155; }
+                        tr:nth-child(even) { background-color: #fcfcfc; }
+                    </style>
+                </head>
+                <body>
+                    <h2>รายงานสรุปโครงการ สัญญา และติดตามค่า K (เรียงตามวันที่ทำสัญญา) - เทศบาลตำบลหนองหัวแรต</h2>
+                    <p>ผู้ดูแลระบบ / ผู้ควบคุมงาน: นายกิตติ พลแหลม | วันที่พิมพ์: ${formatThaiBE(new Date().toISOString().slice(0,10))}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ปีงบ / เลขที่แบบ / ชื่อโครงการ / เป้าหมาย</th>
+                                <th>คำสั่งแต่งตั้ง / กรรมการตรวจรับ</th>
+                                <th>สัญญา / ประเภทงบ / ผู้รับจ้าง</th>
+                                <th>ระยะเวลาสัญญา & ส่งมอบงาน</th>
+                                <th>วันสิ้นสุดคำนวณค่า K (+90วัน)</th>
+                                <th>วงเงินงบประมาณ (บาท)</th>
+                                <th>วงเงินตามสัญญา (บาท)</th>
+                                <th>สถานะโครงการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            selectedProjects.forEach(p => {
+                let commPrint = '-';
+                if (p.committees && p.committees.length > 0) {
+                    commPrint = p.committees.map(c => `<b>${c.pos}:</b> ${c.name}`).join('<br>');
+                }
+
+                let notesPrintArr = [];
+                if (p.note) notesPrintArr.push(`1: ${p.note}`);
+                if (p.note2) notesPrintArr.push(`2: ${p.note2}`);
+                if (p.note3) notesPrintArr.push(`3: ${p.note3}`);
+                let notePrint = notesPrintArr.length > 0 ? `<br><small style="color:#0369a1;"><b>หมายเหตุ:</b> ${notesPrintArr.join(' | ')}</small>` : '';
+                const cDays = calculateConstructionDays(p.startDate, p.endDate);
+
+                printContent += `
+                    <tr>
+                        <td><b style="color:#0284c7;">[ปีงบ ${p.fiscalYear || '2569'}]</b> <b>${p.name}</b><br><small style="color:#b91c1c;"><b>เลขที่แบบ:</b> ${p.drawingNo || '-'}</small><br><small style="color:#64748b;">เป้าหมาย: ${p.target || '-'}</small>${notePrint}</td>
+                        <td>คำสั่ง: ${p.orderNo || '-'} (${formatThaiBE(p.orderDate)})<br>${commPrint}</td>
+                        <td>สัญญา: ${p.contractNo || '-'}<br>ประเภท: <b>${p.budgetType || 'ยังไม่ได้ระบุ'}</b><br>ลงนาม: ${formatThaiBE(p.signDate)}<br>ผู้รับจ้าง: ${p.contractor || '-'}</td>
+                        <td>เริ่ม: ${formatThaiBE(p.startDate)}<br>สิ้นสุด: ${formatThaiBE(p.endDate)}<br>ระยะเวลา: <b>${cDays !== null ? cDays + ' วัน' : '-'}</b><br>ส่งมอบ: <b>${formatThaiBE(p.deliveryDate)}</b></td>
+                        <td style="color:#7e22ce; font-weight:bold;">${formatThaiBE(p.kDate)} ${p.kDone ? '<br><small style="color:#059669;">(ดำเนินการแล้ว)</small>' : ''}</td>
+                        <td><b>${p.budget ? Number(p.budget).toLocaleString() : '-'}</b></td>
+                        <td><b style="color:#0d9488;">${p.contractAmount ? Number(p.contractAmount).toLocaleString() : '-'}</b></td>
+                        <td><b>${p.status}</b></td>
+                    </tr>
+                `;
+            });
+
+            printContent += `
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => { printWindow.print(); }, 500);
+        }
+    </script>
+</body>
+</html>
